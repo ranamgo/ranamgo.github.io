@@ -1,0 +1,190 @@
+:root {
+  --primary-color: #cd3724ff;
+  --secondary-color: #1b5998ff;
+  --tertiary-color: #d4aa00ff;
+  --neutral-color: #0D1B2A;
+}
+
+/* 1. Global Box-Sizing & Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Montserrat", sans-serif;
+}
+
+h1, h2, h3, .main-heading {
+  font-family: "Anton", sans-serif;
+}
+
+.anton {
+  font-family: "Anton", sans-serif;
+}
+
+.mont {
+  font-family: "Montserrat", sans-serif;
+}
+
+h1 {
+  font-size: 2em;
+}
+
+p {
+  font-size: 1.3em;
+}
+
+.main-heading {
+  font-size: 4em;
+  text-transform: uppercase;
+}
+
+.section {
+  min-height: 100vh;
+}
+
+.logo {
+  width: 50px;
+  height: 50px;
+}
+
+.side-padding {
+  padding-inline: 50px;
+}
+
+/* Container holding the card stack */
+/* Container holding the card stack */
+.card-stack {
+  position: relative;
+  width: 260px;
+  height: 380px;
+  margin: 80px auto;
+}
+
+@media (max-width: 998px) {
+  .card-stack {
+    width: 195px;
+    height: 285px;
+  }
+}
+
+/* Base styles for all cards */
+.card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+  box-sizing: border-box;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  text-align: center;
+  
+  /* CRITICAL: Pivot from the bottom center, like holding cards in hand */
+  transform-origin: bottom center;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.card img {
+  width: 100%;
+}
+
+/* Bottom Card: Rotated to the right */
+.bottom-card {
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  z-index: 1;
+  transform: rotate(18deg);
+}
+
+/* Middle Card: Rotated to the left */
+.middle-card {
+  background: #e2e8f0;
+  border: 1px solid #94a3b8;
+  z-index: 2;
+  transform: rotate(-18deg);
+}
+
+/* Top Card: Straight up in the center */
+.top-card {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  z-index: 3;
+  transform: rotate(0deg);
+}
+
+/* Optional: Spread out more when hovering over the stack */
+.card-stack:hover .bottom-card {
+  transform: rotate(28deg) translateY(-10px);
+}
+
+.card-stack:hover .middle-card {
+  transform: rotate(-28deg) translateY(-10px);
+}
+
+.card-stack:hover .top-card {
+  transform: rotate(0deg) translateY(-20px);
+}
+
+/* Custom Card Design with a minimum height */
+.custom-card {
+  border-radius: 1rem;
+  background-color: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  min-height: 380px; /* Adjust this value (e.g., 280px, 320px) to fit your design */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Optional hover polish */
+.custom-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.1) !important;
+}
+
+.mode-icon {
+  width: 50px;
+  height: 50px;
+  background-color: rgb(230, 230, 230);
+  padding: 10px;
+  border-radius: 7px;
+}
+
+.contact-btn {
+  min-width: 150px;
+  max-width: 150px;
+  width: 100%;
+  padding: 10px;
+  outline: none;
+  border-radius: 7px;
+  border: none;
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 500;
+  background-color: var(--neutral-color);
+  color: white;
+  text-decoration: none;
+}
+
+.form-btn {
+  padding: 10px 20px;
+  outline: none;
+  border-radius: 7px;
+  border: none;
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 500;
+  background-color: var(--neutral-color);
+  color: white;
+  text-decoration: none;
+}
+
+.contact-btn:hover, .form-btn:hover {
+  background-color: #1d3957;
+}
+
