@@ -1,5 +1,5 @@
 :root {
-  --primary-color: #cd3724ff;
+  --primary-color: #ea0b0bff;
   --secondary-color: #1b5998ff;
   --tertiary-color: #d4aa00ff;
   --neutral-color: #0D1B2A;
@@ -16,7 +16,7 @@ body {
   font-family: "Montserrat", sans-serif;
 }
 
-h1, h2, h3, .main-heading {
+h1, h2, h3, .main-heading, .game-btn {
   font-family: "Anton", sans-serif;
 }
 
@@ -70,6 +70,19 @@ p {
   }
 }
 
+.game-btn {
+  font-size: 2.5em;
+  padding: 10px;
+  background-color: var(--secondary-color);
+  text-transform: uppercase;
+  color: white;
+  outline: none;
+  border: none;
+}
+
+.game-btn:hover {
+  background-color: #1d3957;
+}
 /* Base styles for all cards */
 .card {
   position: absolute;
@@ -187,4 +200,3 @@ p {
 .contact-btn:hover, .form-btn:hover {
   background-color: #1d3957;
 }
-
