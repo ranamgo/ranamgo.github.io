@@ -588,6 +588,30 @@ body {
 
 /* HOW TO PLAY TUTORIAL */
 
+.lang-toggle {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    justify-content: end;
+}
+
+.lang-toggle button {
+    padding: 4px 10px;          /* Made padding smaller */
+    font-size: 12px;            /* Reduced font size */
+    border: 1px solid #ccc;
+    background: #fff;
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: bold;
+    transition: all 0.2s ease;
+}
+
+.lang-toggle button.active {
+    background: #007bff;
+    color: #fff;
+    border-color: #007bff;
+}
+
 .tutorial-content {
   width: min(520px, 94vw);
   text-align: center;
