@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="./public/ranamgo_logo_v3.0.png" />
+    <title>Play game!</title>
+    <link rel="stylesheet" href="game.css" />
+  </head>
+  <body>
+    <main class="game-container">
+      <h1>My Card Game</h1>
+
+      <section class="game-board">
+        <!-- LAYER 1: COMPUTER COMBAT CARDS -->
+        <section class="player-row computer-row">
+          <div class="pile">
+            <h4>Resting</h4>
+            <div id="computer-resting" class="pile-cards"></div>
+            <span id="computer-resting-count">0</span>
+          </div>
+
+          <div class="deck-area">
+            <h3>COMPUTER</h3>
+            <div id="computer-cards" class="deck-container">
+              <div class="card-back blue-back">
+                <div class="card-back-pattern">
+                  <img src="./public/ranamgo_logo_v3.0.png" alt="ranamGo" />
+                </div>
+              </div>
+            </div>
+            <span>Cards: <span id="computer-count">15</span></span>
+          </div>
+
+          <div class="pile">
+            <h4>Dead</h4>
+            <div id="computer-dead" class="pile-cards"></div>
+            <span id="computer-dead-count">0</span>
+          </div>
+        </section>
+
+        <!-- LAYER 2: COMPUTER POWER CARDS -->
+        <section class="power-row computer-power-row">
+          <h3>COMPUTER POWER CARDS</h3>
+
+          <div id="computer-power-cards" class="power-card-row">
+            <!-- Five Power Cards will be created by JavaScript -->
+          </div>
+
+          <span>Remaining: <span id="computer-power-count">5</span></span>
+        </section>
+
+        <!-- LAYER 3: BATTLEFIELD -->
+        <section class="battle-area">
+          <h3>BATTLE FIELD</h3>
+
+          <div class="battle-slots">
+            <div class="card-slot" id="computer-power-slot">COMPUTER POWER</div>
+
+            <div class="card-slot" id="computer-slot">COMPUTER</div>
+
+            <div class="card-slot" id="player-slot">YOU</div>
+
+            <div class="card-slot" id="player-power-slot">YOUR POWER</div>
+          </div>
+        </section>
+
+        <!-- LAYER 4: PLAYER POWER CARDS -->
+        <section class="power-row player-power-row">
+          <h3>YOUR POWER CARDS</h3>
+
+          <div id="player-power-cards" class="power-card-row">
+            <!-- Five Power Cards will be created by JavaScript -->
+          </div>
+
+          <span>Remaining: <span id="player-power-count">5</span></span>
+        </section>
+
+        <!-- LAYER 5: PLAYER COMBAT CARDS -->
+        <section class="player-row human-row">
+          <div class="pile">
+            <h4>Dead</h4>
+            <div id="player-dead" class="pile-cards"></div>
+            <span id="player-dead-count">0</span>
+          </div>
+
+          <div class="deck-area">
+            <h3>YOU</h3>
+            <div id="player-cards" class="deck-container">
+              <div class="card-back red-back">
+                <div class="card-back-pattern">
+                  <img src="./public/ranamgo_logo_v3.0.png" alt="ranamGo" />
+                </div>
+              </div>
+            </div>
+            <span>Cards: <span id="player-count">15</span></span>
+          </div>
+
+          <div class="pile">
+            <h4>Resting</h4>
+            <div id="player-resting" class="pile-cards"></div>
+            <span id="player-resting-count">0</span>
+          </div>
+        </section>
+
+        <!-- GO BUTTON -->
+        <div class="go-area">
+          <button id="go-button" disabled>GO!</button>
+        </div>
+        <div id="game-status">Ready to play</div>
+      </section>
+      <!-- <p id="game-status">Game is ready to be built.</p> -->
+    </main>
+
+    <!-- HOW TO PLAY TUTORIAL -->
+    <div id="tutorial-modal" class="modal hidden">
+      <div class="modal-content tutorial-content">
+        <h2>HOW TO PLAY</h2>
+
+        <div class="tutorial-progress">
+          <span id="tutorial-step-count">STEP 1 OF 6</span>
+          <div class="tutorial-progress-track">
+            <div id="tutorial-progress-fill"></div>
+          </div>
+        </div>
+
+        <div class="tutorial-step">
+          <h3 id="tutorial-title">The Objective</h3>
+          <p id="tutorial-description">
+            Win battles and collect Combat Cards in your Resting pile. The
+            player with the most Resting Cards wins!
+          </p>
+        </div>
+
+        <div class="tutorial-buttons">
+          <button id="tutorial-back-button" disabled>BACK</button>
+
+          <button id="tutorial-skip-button">SKIP TUTORIAL</button>
+
+          <button id="tutorial-next-button">NEXT</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- INITIAL POWER CARD SELECTION MODAL -->
+    <div id="power-selection-modal" class="modal hidden">
+      <div class="modal-content power-selection-content">
+        <h2>SELECT YOUR POWER CARD</h2>
+
+        <p id="power-selection-message">
+          Choose one card. You can reveal only one!
+        </p>
+
+        <div id="power-selection-cards" class="power-selection-cards">
+          <!-- Five cards will be created by JavaScript -->
+        </div>
+
+        <button id="power-selection-close-button" disabled>START GAME</button>
+      </div>
+    </div>
+
+    <!-- POWER ATTACK MODAL -->
+    <div id="power-modal" class="modal hidden">
+      <div class="modal-content">
+        <h2>POWER ATTACK!</h2>
+
+        <p id="power-message">Waiting for Power Cards...</p>
+
+        <div class="power-battle-slots">
+          <div class="power-player">
+            <h3>COMPUTER</h3>
+            <div id="modal-computer-power" class="modal-power-slot"></div>
+          </div>
+
+          <div class="power-player">
+            <h3>YOU</h3>
+            <div id="modal-player-power" class="modal-power-slot"></div>
+          </div>
+        </div>
+
+        <button id="power-play-button">PLAY</button>
+      </div>
+    </div>
+
+    <!-- GO / STOP PENALTY MODAL -->
+    <div id="penalty-modal" class="modal hidden">
+      <div class="modal-content penalty-content">
+        <h2>PENALTY!</h2>
+
+        <p>You touched the shared Power deck without declaring GO.</p>
+
+        <p>
+          The computer wins this battle. Both Combat Cards are moved to the
+          computer's Resting pile.
+        </p>
+
+        <button id="penalty-close-button">CONTINUE</button>
+      </div>
+    </div>
+
+    <!-- GAME OVER MODAL -->
+    <div id="game-over-modal" class="modal hidden">
+      <div class="modal-content game-over-content">
+        <h2>GAME OVER!</h2>
+
+        <h1 id="final-winner">YOU WIN!</h1>
+
+        <div class="final-score">
+          <!-- PLAYER RESULTS -->
+          <div class="final-player">
+            <h3 id="player-result-title">YOU</h3>
+
+            <p>Resting Cards</p>
+            <div id="final-player-resting">0</div>
+
+            <p>Dead Cards</p>
+            <div id="final-player-dead">0</div>
+          </div>
+
+          <!-- COMPUTER RESULTS -->
+          <div class="final-player">
+            <h3 id="computer-result-title">COMPUTER</h3>
+
+            <p>Resting Cards</p>
+            <div id="final-computer-resting">0</div>
+
+            <p>Dead Cards</p>
+            <div id="final-computer-dead">0</div>
+          </div>
+        </div>
+
+        <!-- REMAINING POWER CARDS -->
+        <div class="remaining-power">
+          <h3>REMAINING POWER CARDS</h3>
+          <div id="final-power-count">0</div>
+        </div>
+
+        <!-- PLAY AGAIN BUTTON -->
+        <button id="play-again-button">PLAY AGAIN</button>
+      </div>
+    </div>
+
+    <script src="cards.js"></script>
+    <script src="game.js"></script>
+  </body>
+</html>

@@ -1,0 +1,1073 @@
+
+
+// 1. Shuffle a deck without changing the original card array
+function shuffleCards(cards) {
+    const shuffled = [...cards];
+
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+
+    return shuffled;
+}
+
+
+// 2. Store everything needed for one game
+
+const gameState = {
+    playerDeck: shuffleCards(redCards),
+    computerDeck: shuffleCards(blueCards),
+
+    // Each player receives one complete set of five ranks.
+    playerPowerDeck: shuffleCards(
+        powerCards.filter(card => card.copy === 1)
+    ),
+
+    computerPowerDeck: shuffleCards(
+        powerCards.filter(card => card.copy === 2)
+    ),
+
+    playerKnownPower: null,
+    computerKnownPower: null,
+
+    playerResting: [],
+    playerDead: [],
+    computerResting: [],
+    computerDead: [],
+
+    playerCard: null,
+    computerCard: null,
+
+    playerPowerCard: null,
+    computerPowerCard: null,
+
+    firstPowerPlayer: null,
+    isSuddenDeath: false,
+    phase: "computer-selecting"
+};
+
+
+const tutorialSteps = [
+    {
+        title: "The Objective",
+        description:
+            "Win battles and collect Combat Cards in your Resting pile. After all 15 Combat Cards have been played, the player with the most Resting Cards wins!"
+    },
+    {
+        title: "Choose Your Secret Power Card",
+        description:
+            "You have five Power Cards. Inspect one card and remember its rank. The computer secretly selects one too. Your selected card stays in your row until you use it."
+    },
+    {
+        title: "Start a Battle",
+        description:
+            "Tap your Combat Card deck. Your card and the computer's card are revealed together. Normal Combat Cards are compared by value. The higher value wins."
+    },
+    {
+        title: "Power Attacks",
+        description:
+            "Lightning Cards can trigger Power Attacks. When a Power Attack happens, reveal one of your remaining Power Cards. The lower rank number is stronger. The winner collects both Combat Cards. A tied Power Attack destroys all four cards."
+    },
+    {
+        title: "Remember to Call GO!",
+        description:
+            "When your Lightning Card has a lower value than the opponent's Normal Card, you may launch an optional Power Attack. Press GO before touching your Power Cards! Touching a Power Card without calling GO results in a penalty: the computer collects both Combat Cards."
+    },
+    {
+        title: "Special Cards and Winning",
+        description:
+            "A Destructor destroys both Combat Cards. When all Combat Cards have been played, the player with more Resting Cards wins. If scores are tied, Sudden Death begins!"
+    }
+];
+
+
+let currentTutorialStep = 0;
+
+function showTutorialStep() {
+    const step = tutorialSteps[currentTutorialStep];
+
+    document.getElementById("tutorial-title").textContent =
+        step.title;
+
+    document.getElementById("tutorial-description").textContent =
+        step.description;
+
+    document.getElementById("tutorial-step-count").textContent =
+        `STEP ${currentTutorialStep + 1} OF ${tutorialSteps.length}`;
+
+    document.getElementById("tutorial-progress-fill").style.width =
+        `${((currentTutorialStep + 1) / tutorialSteps.length) * 100}%`;
+
+    document.getElementById("tutorial-back-button").disabled =
+        currentTutorialStep === 0;
+
+    document.getElementById("tutorial-next-button").textContent =
+        currentTutorialStep === tutorialSteps.length - 1
+            ? "CONTINUE"
+            : "NEXT";
+}
+
+function showTutorial() {
+    currentTutorialStep = 0;
+
+    document.getElementById("tutorial-modal")
+        .classList.remove("hidden");
+
+    showTutorialStep();
+}
+
+function closeTutorialAndStart() {
+    document.getElementById("tutorial-modal")
+        .classList.add("hidden");
+
+    initializePowerCards();
+}
+
+function renderPowerRows() {
+
+    const computerRow =
+        document.getElementById("computer-power-cards");
+
+    const playerRow =
+        document.getElementById("player-power-cards");
+
+    computerRow.innerHTML = "";
+    playerRow.innerHTML = "";
+
+    gameState.computerPowerDeck.forEach(card => {
+        const element = document.createElement("div");
+        element.className = "power-row-card";
+        element.textContent = "POWER";
+        computerRow.appendChild(element);
+    });
+
+    gameState.playerPowerDeck.forEach(card => {
+        const element = document.createElement("div");
+        element.className = "power-row-card";
+        element.textContent = "POWER";
+        element.dataset.powerId = card.id;
+        playerRow.appendChild(element);
+    });
+}
+
+
+function computerSelectsKnownPower() {
+    gameState.computerKnownPower =
+        gameState.computerPowerDeck[
+        Math.floor(
+            Math.random() * gameState.computerPowerDeck.length
+        )
+        ];
+}
+
+function showPlayerPowerSelection() {
+    const modal =
+        document.getElementById("power-selection-modal");
+
+    const container =
+        document.getElementById("power-selection-cards");
+
+    const closeButton =
+        document.getElementById("power-selection-close-button");
+
+    container.innerHTML = "";
+    closeButton.disabled = true;
+
+    gameState.playerPowerDeck.forEach(card => {
+        const element = document.createElement("div");
+
+        element.className = "power-choice-card";
+        element.textContent = "POWER";
+
+        element.addEventListener("click", () => {
+            if (gameState.playerKnownPower) return;
+
+            gameState.playerKnownPower = card;
+
+            element.textContent =
+                `#${card.rank} ${card.name}`;
+
+            element.classList.add("revealed");
+
+            container.querySelectorAll(".power-choice-card")
+                .forEach(otherCard => {
+                    if (otherCard !== element) {
+                        otherCard.classList.add("disabled");
+                    }
+                });
+
+            closeButton.disabled = false;
+        });
+
+        container.appendChild(element);
+    });
+
+    modal.classList.remove("hidden");
+}
+
+function initializePowerCards() {
+
+    renderPowerRows();
+
+    document.getElementById("game-status").textContent =
+        "Computer is thinking and selecting a Power Card...";
+
+    setTimeout(() => {
+        computerSelectsKnownPower();
+
+        document.getElementById("game-status").textContent =
+            "Choose one Power Card to inspect.";
+
+        showPlayerPowerSelection();
+    }, 2500);
+}
+
+
+// 3. Update all deck and pile counters
+function updateCounts() {
+    document.getElementById("player-count").textContent =
+        gameState.playerDeck.length;
+
+    document.getElementById("computer-count").textContent =
+        gameState.computerDeck.length;
+
+    document.getElementById("player-power-count").textContent =
+        gameState.playerPowerDeck.length;
+
+    document.getElementById("computer-power-count").textContent =
+        gameState.computerPowerDeck.length;
+
+    document.getElementById("player-resting-count").textContent =
+        gameState.playerResting.length;
+
+    document.getElementById("player-dead-count").textContent =
+        gameState.playerDead.length;
+
+    document.getElementById("computer-resting-count").textContent =
+        gameState.computerResting.length;
+
+    document.getElementById("computer-dead-count").textContent =
+        gameState.computerDead.length;
+}
+
+
+function findPowerCard(deck, cardId) {
+    return deck.find(card => card.id === cardId);
+}
+
+
+function selectPlayerPowerCard(cardId) {
+    const card = findPowerCard(
+        gameState.playerPowerDeck,
+        cardId
+    );
+
+    if (!card) return;
+
+    if (gameState.phase !== "waiting-player-power") return;
+
+    gameState.playerPowerCard = card;
+
+    revealPowerCard(
+        card,
+        document.getElementById("player-power-slot")
+    );
+
+    gameState.playerPowerDeck =
+        gameState.playerPowerDeck.filter(
+            item => item.id !== card.id
+        );
+
+    renderPowerRows();
+    updateCounts();
+
+    // The computer responds after a short thinking delay.
+    gameState.phase = "computer-thinking";
+
+    document.getElementById("game-status").textContent =
+        "Computer is thinking...";
+
+    if (gameState.computerPowerCard) {
+        // Computer already revealed its card.
+        // Player has now revealed the second card.
+        setTimeout(() => {
+            resolvePowerAttack();
+        }, 1000);
+
+    } else {
+        // Player revealed first, so computer must respond.
+        setTimeout(() => {
+            computerChoosePowerCard();
+        }, 1800);
+    }
+}
+
+
+function computerChoosePowerCard() {
+    const deck = gameState.computerPowerDeck;
+
+    if (deck.length === 0) return;
+
+    let chosenCard = null;
+
+    const knownCard = gameState.computerKnownPower;
+
+    // Use its known card if it can beat the player's card.
+    if (
+        knownCard &&
+        deck.some(card => card.id === knownCard.id) &&
+        knownCard.rank < gameState.playerPowerCard.rank
+    ) {
+        chosenCard = knownCard;
+    } else {
+        // Otherwise, choose randomly from its remaining cards.
+        chosenCard = deck[
+            Math.floor(Math.random() * deck.length)
+        ];
+    }
+
+    gameState.computerPowerCard = chosenCard;
+
+    revealPowerCard(
+        chosenCard,
+        document.getElementById("computer-power-slot")
+    );
+
+    gameState.computerPowerDeck =
+        deck.filter(card => card.id !== chosenCard.id);
+
+    renderPowerRows();
+    updateCounts();
+
+    setTimeout(() => {
+        resolvePowerAttack();
+    }, 1000);
+}
+
+
+
+
+// 4. Display a revealed Combat Card
+function revealCard(card, slot) {
+    slot.innerHTML = "";
+
+    const cardElement = document.createElement("div");
+
+    cardElement.classList.add("game-card");
+    cardElement.classList.add(card.colour + "-card");
+
+    if (card.type === "destructor") {
+        cardElement.innerHTML = `
+            <div class="card-type">DESTRUCTOR</div>
+            <div class="card-number">⚔</div>
+        `;
+    } else {
+        cardElement.innerHTML = `
+            <div class="card-number">${card.value}</div>
+            <div class="card-type">${card.type.toUpperCase()}</div>
+        `;
+    }
+
+    slot.appendChild(cardElement);
+}
+
+
+// 5. Hide an empty draw deck
+function hideEmptyDeck(deck, selector) {
+    if (deck.length === 0) {
+        document.querySelector(selector)
+            .classList.add("deck-empty");
+    }
+}
+
+
+// 6. Draw and reveal both Combat Cards
+function drawBattle() {
+
+    // Only allow a new draw when the game is ready
+    if (gameState.phase !== "ready") {
+        return;
+    }
+
+    if (
+        gameState.playerDeck.length === 0 ||
+        gameState.computerDeck.length === 0
+    ) {
+        document.getElementById("game-status").textContent =
+            "No more Combat Cards to draw.";
+
+        return;
+    }
+
+    gameState.playerCard = gameState.playerDeck.pop();
+    gameState.computerCard = gameState.computerDeck.pop();
+
+    gameState.phase = "revealed";
+
+    revealCard(
+        gameState.computerCard,
+        document.getElementById("computer-slot")
+    );
+
+    revealCard(
+        gameState.playerCard,
+        document.getElementById("player-slot")
+    );
+
+    updateCounts();
+
+    hideEmptyDeck(gameState.playerDeck, "#player-cards .card-back");
+    hideEmptyDeck(gameState.computerDeck, "#computer-cards .card-back");
+
+    // document.getElementById("game-status").textContent =
+    //     "Cards revealed — resolving battle next.";
+
+    resolveBattle()
+
+}
+
+function resolveBattle() {
+
+    const player = gameState.playerCard;
+    const computer = gameState.computerCard;
+
+    // Disable GO unless the current battle allows it
+    document.getElementById("go-button").disabled = true;
+
+    // Destructor destroys both cards
+    if (
+        player.type === "destructor" ||
+        computer.type === "destructor"
+    ) {
+        gameState.playerDead.push(player);
+        gameState.computerDead.push(computer);
+
+        document.getElementById("game-status").textContent =
+            "Destructor! Both cards are destroyed.";
+
+        finishBattle();
+        return;
+    }
+
+    // Normal vs Normal
+    if (
+        player.type === "normal" &&
+        computer.type === "normal"
+    ) {
+        resolveByValue(player, computer);
+        return;
+    }
+
+    // Lightning vs Lightning: mandatory Power Attack
+    if (
+        player.type === "lightning" &&
+        computer.type === "lightning"
+    ) {
+        if (gameState.playerPowerDeck.length >= 1 && gameState.computerPowerDeck.length >= 1) {
+
+            // Higher-valued Lightning draws first
+            const firstPlayer =
+                player.value > computer.value ? "player" : "computer";
+
+            startPowerAttack(firstPlayer);
+            return;
+        }
+
+        // No Power Attack available
+        if (gameState.isSuddenDeath) {
+
+            // During Sudden Death, resolve by Lightning Card value
+            resolveByValue(player, computer);
+
+        } else {
+
+            // During the main game, both Lightning Cards go to Resting
+            gameState.playerResting.push(player);
+            gameState.computerResting.push(computer);
+
+            document.getElementById("game-status").textContent =
+                "No Power Attack available. Both Lightning cards rest.";
+
+            finishBattle();
+        }
+        return;
+    }
+
+    // Identify the Lightning card
+    const lightning =
+        player.type === "lightning" ? player : computer;
+
+    const normal =
+        player.type === "normal" ? player : computer;
+
+    // Lightning is lower: optional Power Attack
+    if (lightning.value < normal.value) {
+
+        if (gameState.playerPowerDeck.length >= 1 && gameState.computerPowerDeck.length >= 1) {
+
+            if (player.type === "lightning") {
+
+                document.getElementById("go-button").disabled = false;
+
+                gameState.phase = "optional-power-attack";
+
+                document.getElementById("game-status").textContent =
+                    "Your Lightning is lower. Tap GO to use a Power Attack, or skip it.";
+
+            } else {
+
+                // Computer chooses to use its optional Power Attack
+                document.getElementById("game-status").textContent =
+                    "Computer calls a Power Attack!";
+
+                startPowerAttack("computer");
+            }
+
+            return;
+        }
+
+        // Not enough Power Cards
+        resolveByValue(player, computer);
+        return;
+    }
+
+    // Lightning is higher: resolve by Combat Card value
+    resolveByValue(player, computer);
+}
+
+
+function startPowerAttack(firstPlayer) {
+    gameState.firstPowerPlayer = firstPlayer;
+
+    // A Power Attack requires one available card from each player.
+    if (
+        gameState.playerPowerDeck.length < 1 ||
+        gameState.computerPowerDeck.length < 1
+    ) {
+        resolveByValue();
+        return;
+    }
+
+    if (firstPlayer === "player") {
+        gameState.phase = "waiting-player-power";
+
+        document.getElementById("game-status").textContent =
+            "Choose your Power Card!";
+
+        return;
+    }
+
+    // Computer reveals its first card.
+    const deck = gameState.computerPowerDeck;
+    const knownCard = gameState.computerKnownPower;
+
+    // Prefer its known card if it is still available.
+    const chosenCard =
+        knownCard && deck.some(card => card.id === knownCard.id)
+            ? knownCard
+            : deck[Math.floor(Math.random() * deck.length)];
+
+    gameState.computerPowerCard = chosenCard;
+
+    gameState.computerPowerDeck = deck.filter(
+        card => card.id !== chosenCard.id
+    );
+
+    revealPowerCard(
+        chosenCard,
+        document.getElementById("computer-power-slot")
+    );
+
+    renderPowerRows();
+    updateCounts();
+
+    gameState.phase = "waiting-player-power";
+
+    document.getElementById("game-status").textContent =
+        "Computer has revealed its Power Card. Choose yours!";
+}
+
+
+function applyGoPenalty() {
+
+    if (gameState.phase !== "optional-power-attack") {
+        return;
+    }
+
+    // Both Combat Cards go to the computer's Resting pile.
+    gameState.computerResting.push(gameState.computerCard);
+    gameState.computerResting.push(gameState.playerCard);
+
+    // Prevent further actions during the penalty.
+    gameState.phase = "penalty";
+
+    document.getElementById("go-button").disabled = true;
+
+    updateCounts();
+
+    document.getElementById("game-status").textContent =
+        "GO penalty! Computer wins both Combat Cards.";
+
+    // Display the penalty pop-up.
+    document.getElementById("penalty-modal").classList.remove("hidden");
+}
+
+
+// Human taps the shared Power deck
+
+function drawPlayerPowerCard() {
+
+    if (gameState.phase !== "waiting-player-power") return;
+
+    if (gameState.powerDeck.length === 0) return;
+
+    // Draw your Power Card
+    gameState.playerPowerCard = gameState.powerDeck.pop();
+
+    gameState.phase = "power-attack";
+
+    const modal = document.getElementById("power-modal");
+
+    // Show your card in the modal
+    revealPowerCard(
+        gameState.playerPowerCard,
+        document.getElementById("modal-player-power")
+    );
+
+    // Now open the modal
+    modal.classList.remove("hidden");
+
+    document.getElementById("power-play-button").style.display =
+        "none";
+
+    document.getElementById("power-message").textContent =
+        "Your Power Card played! Computer is choosing its card...";
+
+    updateCounts();
+
+    // Computer draws after a short delay
+    setTimeout(function () {
+
+        if (gameState.phase !== "power-attack") return;
+
+        gameState.computerPowerCard = gameState.powerDeck.pop();
+
+        revealPowerCard(
+            gameState.computerPowerCard,
+            document.getElementById("modal-computer-power")
+        );
+
+        document.getElementById("power-message").textContent =
+            "Both Power Cards revealed!";
+
+        updateCounts();
+
+        resolvePowerAttack();
+
+    }, 1500);
+}
+
+
+// Human clicks PLAY when computer has drawn first
+
+function playSecondPowerCard() {
+
+    if (gameState.phase !== "power-attack") return;
+
+    if (gameState.firstPowerPlayer !== "computer") return;
+
+    if (gameState.playerPowerCard !== null) return;
+
+    if (gameState.powerDeck.length === 0) return;
+
+    gameState.playerPowerCard = gameState.powerDeck.pop();
+
+    revealPowerCard(
+        gameState.playerPowerCard,
+        document.getElementById("modal-player-power")
+    );
+
+    document.getElementById("power-message").textContent =
+        "Both Power Cards revealed!";
+
+    updateCounts();
+
+    resolvePowerAttack();
+}
+
+
+// Compare Power Cards and resolve the battle
+function resolvePowerAttack() {
+    const playerPower = gameState.playerPowerCard;
+    const computerPower = gameState.computerPowerCard;
+
+    if (!playerPower || !computerPower) return;
+
+    // Both Power Cards are spent.
+    gameState.playerDead.push(playerPower);
+    gameState.computerDead.push(computerPower);
+
+    if (playerPower.rank < computerPower.rank) {
+        // Player wins: collect both Combat Cards.
+        gameState.playerResting.push(gameState.playerCard);
+        gameState.playerResting.push(gameState.computerCard);
+
+        document.getElementById("game-status").textContent =
+            "Your Power Card wins! You collect both Combat Cards.";
+
+    } else if (computerPower.rank < playerPower.rank) {
+        // Computer wins: collect both Combat Cards.
+        gameState.computerResting.push(gameState.computerCard);
+        gameState.computerResting.push(gameState.playerCard);
+
+        document.getElementById("game-status").textContent =
+            "Computer wins the Power Attack and collects both Combat Cards.";
+
+    } else {
+        // Equal Power ranks: all four cards go to their owners' Dead piles.
+        gameState.playerDead.push(gameState.playerCard);
+        gameState.computerDead.push(gameState.computerCard);
+
+        document.getElementById("game-status").textContent =
+            "Power Attack tied! All four cards are destroyed.";
+    }
+
+    gameState.playerPowerCard = null;
+    gameState.computerPowerCard = null;
+
+    updateCounts();
+
+    setTimeout(() => {
+        finishBattle();
+    }, 1500);
+}
+
+
+// Resolve a battle using Combat Card values
+function resolveByValue(player, computer) {
+
+    if (player.value > computer.value) {
+        gameState.playerResting.push(player);
+        gameState.computerDead.push(computer);
+
+        document.getElementById("game-status").textContent =
+            "You win this battle!";
+
+    } else if (computer.value > player.value) {
+        gameState.computerResting.push(computer);
+        gameState.playerDead.push(player);
+
+        document.getElementById("game-status").textContent =
+            "Computer wins this battle!";
+
+    }
+
+    finishBattle();
+}
+
+function revealPowerCard(card, slot) {
+
+    slot.innerHTML = "";
+
+    const cardElement = document.createElement("div");
+
+    cardElement.classList.add("game-card", "power-card");
+
+    cardElement.innerHTML = `
+        <div class="card-number">#${card.rank}</div>
+        <div class="card-type">${card.name}</div>
+        <div class="card-type">${card.element}</div>
+    `;
+
+    slot.appendChild(cardElement);
+}
+
+// SHOW FINAL GAME RESULTS
+function showGameOver(winner) {
+
+    const winnerElement =
+        document.getElementById("final-winner");
+
+    if (winner === "player") {
+        winnerElement.textContent = "YOU WIN!";
+    } else if (winner === "computer") {
+        winnerElement.textContent = "COMPUTER WINS!";
+    } else {
+        winnerElement.textContent = "IT'S A DRAW!";
+    }
+
+    document.getElementById("final-player-resting")
+        .textContent = gameState.playerResting.length;
+
+    document.getElementById("final-player-dead")
+        .textContent = gameState.playerDead.length;
+
+    document.getElementById("final-computer-resting")
+        .textContent = gameState.computerResting.length;
+
+    document.getElementById("final-computer-dead")
+        .textContent = gameState.computerDead.length;
+
+    // Both players have independent Power Card sets.
+    document.getElementById("final-power-count")
+        .textContent =
+        gameState.playerPowerDeck.length +
+        gameState.computerPowerDeck.length;
+
+    document.getElementById("game-over-modal")
+        .classList.remove("hidden");
+
+    document.getElementById("game-status").textContent =
+        "Game over!";
+}
+
+
+// CHECK WHETHER THE REGULAR GAME HAS ENDED
+function checkRegularGameEnd() {
+
+    if (
+        gameState.playerDeck.length !== 0 ||
+        gameState.computerDeck.length !== 0
+    ) {
+        return false;
+    }
+
+    const playerScore = gameState.playerResting.length;
+    const computerScore = gameState.computerResting.length;
+
+    if (playerScore > computerScore) {
+        gameState.phase = "game-over";
+        showGameOver("player");
+
+    } else if (computerScore > playerScore) {
+        gameState.phase = "game-over";
+        showGameOver("computer");
+
+    } else {
+        document.getElementById("game-status").textContent =
+            "The scores are tied! Sudden Death is required.";
+
+        startSuddenDeath();
+    }
+
+    return true;
+}
+
+
+// Finish the current battle
+function finishBattle() {
+
+    // Prevent another battle from starting during resolution.
+    if (gameState.phase === "finishing") {
+        return;
+    }
+
+    gameState.phase = "finishing";
+
+    document.getElementById("go-button").disabled = true;
+
+    // Keep the revealed cards visible for 1.5 seconds.
+    setTimeout(() => {
+
+        // Clear all four battlefield slots.
+        document.getElementById("computer-power-slot").innerHTML = "Comp";
+        document.getElementById("computer-slot").innerHTML = "Comp";
+        document.getElementById("player-slot").innerHTML = "You";
+        document.getElementById("player-power-slot").innerHTML = "You";
+
+        // Reset the cards used in this battle.
+        gameState.playerCard = null;
+        gameState.computerCard = null;
+        gameState.playerPowerCard = null;
+        gameState.computerPowerCard = null;
+
+        // Prepare for the next battle.
+        gameState.phase = "ready";
+
+        updateCounts();
+
+        const gameEnded = checkRegularGameEnd();
+
+        if (!gameEnded && gameState.phase === "ready") {
+            document.getElementById("game-status").textContent =
+                "Ready for the next battle. Tap your Combat Card deck.";
+        }
+
+    }, 1500);
+}
+
+
+function startSuddenDeath() {
+
+    // Take copies of both players' Resting Cards
+    const playerSuddenDeck = [...gameState.playerResting];
+    const computerSuddenDeck = [...gameState.computerResting];
+
+    // The opponent shuffles and returns each player's deck.
+    // Shuffling the decks independently gives the same result.
+    gameState.playerDeck = shuffleCards(playerSuddenDeck);
+    gameState.computerDeck = shuffleCards(computerSuddenDeck);
+
+    // Clear the Resting piles for the Sudden Death battle.
+    // Their cards are now in the new Combat decks.
+    gameState.playerResting = [];
+    gameState.computerResting = [];
+
+    // Mark the game as Sudden Death
+    gameState.isSuddenDeath = true;
+
+    gameState.phase = "ready";
+
+    // Update the displayed deck and pile counts
+    updateCounts();
+
+    // Update the game message
+    document.getElementById("game-status").textContent =
+        "SUDDEN DEATH! First player to win a battle wins the game!";
+}
+
+
+document
+    .getElementById("power-selection-close-button")
+    .addEventListener("click", () => {
+
+        if (!gameState.playerKnownPower) return;
+
+        document
+            .getElementById("power-selection-modal")
+            .classList.add("hidden");
+
+        gameState.phase = "ready";
+
+        document.getElementById("game-status").textContent =
+            "Game started! Tap your Combat Card deck.";
+
+    });
+
+// Close penalty modal and continue
+document.getElementById("penalty-close-button")
+    .addEventListener("click", function () {
+
+        document.getElementById("penalty-modal")
+            .classList.add("hidden");
+
+        finishBattle();
+
+    });
+
+// PLAY AGAIN BUTTON
+document.getElementById("play-again-button")
+    .addEventListener("click", function () {
+
+        // Reload the game and create fresh shuffled decks
+        window.location.reload();
+
+    });
+
+// 7. Connect the player's draw deck to the click action
+document.querySelector("#player-cards .card-back")
+    .addEventListener("click", drawBattle);
+
+
+// GO button
+document.getElementById("go-button")
+    .addEventListener("click", function () {
+
+        if (gameState.phase !== "optional-power-attack") return;
+
+        document.getElementById("go-button").disabled = true;
+
+        // Activate the shared Power deck.
+        // Do not open the modal yet.
+        startPowerAttack("player");
+
+    });
+
+
+document
+    .getElementById("player-power-cards")
+    .addEventListener("click", event => {
+
+        const cardElement =
+            event.target.closest(".power-row-card");
+
+        if (!cardElement) return;
+
+        // Clicking a Power Card without GO triggers the penalty.
+        if (gameState.phase === "optional-power-attack") {
+            applyGoPenalty();
+            return;
+        }
+
+        const cardId = cardElement.dataset.powerId;
+
+        if (!cardId) return;
+
+        selectPlayerPowerCard(cardId);
+    });
+
+// BACK button
+document.getElementById("tutorial-back-button")
+    .addEventListener("click", () => {
+
+        if (currentTutorialStep > 0) {
+            currentTutorialStep--;
+            showTutorialStep();
+        }
+    });
+
+// NEXT button
+document.getElementById("tutorial-next-button")
+    .addEventListener("click", () => {
+
+        if (currentTutorialStep < tutorialSteps.length - 1) {
+            currentTutorialStep++;
+            showTutorialStep();
+        } else {
+            closeTutorialAndStart();
+        }
+    });
+
+// SKIP button
+document.getElementById("tutorial-skip-button")
+    .addEventListener("click", () => {
+        closeTutorialAndStart();
+    });
+
+// Shared Power deck
+// document.querySelector("#power-cards .card-back")
+//     .addEventListener("click", drawPlayerPowerCard);
+
+// document.querySelector("#power-cards .card-back")
+//     .addEventListener("click", function () {
+
+//         // Player touched Power deck without declaring GO
+//         if (gameState.phase === "optional-power-attack") {
+
+//             alert("STOP! You must declare GO before touching the Power deck.");
+
+//             applyGoPenalty();
+
+//             return;
+//         }
+
+//         // Player correctly declared GO
+//         if (gameState.phase === "waiting-player-power") {
+
+//             drawPlayerPowerCard();
+
+//         }
+
+//     });
+
+// PLAY button in the modal
+document.getElementById("power-play-button")
+    .addEventListener("click", playSecondPowerCard);
+
+// initializePowerCards();
+showTutorial();
+
+// 8. Show the initial counts
+updateCounts();
