@@ -1,5 +1,3 @@
-
-
 // 1. Shuffle a deck without changing the original card array
 function shuffleCards(cards) {
     const shuffled = [...cards];
@@ -43,6 +41,8 @@ const gameState = {
     playerPowerCard: null,
     computerPowerCard: null,
 
+    tutorialLanguage: 'en',
+
     firstPowerPlayer: null,
     isSuddenDeath: false,
     phase: "computer-selecting"
@@ -51,34 +51,76 @@ const gameState = {
 
 const tutorialSteps = [
     {
-        title: "The Objective",
-        description:
-            "Win battles and collect Combat Cards in your Resting pile. After all 15 Combat Cards have been played, the player with the most Resting Cards wins!"
+        en: {
+            title: "The Objective",
+            description:
+                "Win battles and collect Combat Cards in your Resting pile. After all 15 Combat Cards have been played, the player with the most Resting Cards wins!"
+        },
+        ml: {
+            title: "ലക്ഷ്യം (The Objective)",
+            description:
+                "പോരാട്ടങ്ങൾ ജയിച്ച് Combat Cards നിങ്ങളുടെ Resting pile-ൽ ശേഖരിക്കുക. 15 Combat Cards-ഉം കളിച്ചു കഴിയുമ്പോൾ, ഏറ്റവും കൂടുതൽ Resting Cards ഉള്ള കളിക്കാരൻ വിജയിക്കും!"
+        }
     },
     {
-        title: "Choose Your Secret Power Card",
-        description:
-            "You have five Power Cards. Inspect one card and remember its rank. The computer secretly selects one too. Your selected card stays in your row until you use it."
+        en: {
+            title: "Choose Your Secret Power Card",
+            description:
+                "You have five Power Cards. Inspect one card and remember its rank. The computer secretly selects one too. Your selected card stays in your row until you use it."
+        },
+        ml: {
+            title: "രഹസ്യ Power Card തിരഞ്ഞെടുക്കുക (Choose Secret Power Card)",
+            description:
+                "നിങ്ങളുടെ പക്കൽ അഞ്ച് Power Cards ഉണ്ട്. ഒരു കാർഡ് പരിശോധിച്ച് അതിന്റെ റാങ്ക് ഓർത്തുവെക്കുക. കമ്പ്യൂട്ടറും ഒരെണ്ണം രഹസ്യമായി തിരഞ്ഞെടുക്കും. നിങ്ങൾ തിരഞ്ഞെടുത്ത കാർഡ് ഉപയോഗിക്കുന്നതുവരെ അത് നിങ്ങളുടെ നിരയിൽ തന്നെ നിൽക്കും."
+        }
     },
     {
-        title: "Start a Battle",
-        description:
-            "Tap your Combat Card deck. Your card and the computer's card are revealed together. Normal Combat Cards are compared by value. The higher value wins."
+        en: {
+            title: "Start a Battle",
+            description:
+                "Tap your Combat Card deck. Your card and the computer's card are revealed together. Normal Combat Cards are compared by value. The higher value wins."
+        },
+        ml: {
+            title: "പോരാട്ടം ആരംഭിക്കുക (Start a Battle)",
+            description:
+                "നിങ്ങളുടെ Combat Card deck-ൽ ടാപ്പ് ചെയ്യുക. നിങ്ങളുടെ കാർഡും കമ്പ്യൂട്ടറിന്റെ കാർഡും ഒന്നിച്ച് വെളിപ്പെടുത്തും. സാധാരണ Combat Cards-ന്റെ മൂല്യം താരതമ്യം ചെയ്യും. ഉയർന്ന മൂല്യമുള്ള കാർഡ് ജയിക്കും."
+        }
     },
     {
-        title: "Power Attacks",
-        description:
-            "Lightning Cards can trigger Power Attacks. When a Power Attack happens, reveal one of your remaining Power Cards. The lower rank number is stronger. The winner collects both Combat Cards. A tied Power Attack destroys all four cards."
+        en: {
+            title: "Power Attacks",
+            description:
+                "Lightning Cards can trigger Power Attacks. When a Power Attack happens, reveal one of your remaining Power Cards. The lower rank number is stronger. The winner collects both Combat Cards. A tied Power Attack destroys all four cards."
+        },
+        ml: {
+            title: "Power Attacks",
+            description:
+                "Lightning Cards-ന് Power Attacks ആരംഭിക്കാൻ കഴിയും. ഒരു Power Attack നടക്കുമ്പോൾ, നിങ്ങളുടെ ബാക്കിയുള്ള Power Cards-ൽ ഒരെണ്ണം വെളിപ്പെടുത്തുക. കുറഞ്ഞ റാങ്ക് നമ്പറുള്ള കാർഡാണ് കൂടുതൽ ശക്തം. വിജയിക്ക് രണ്ട് Combat Cards-ഉം ലഭിക്കും. Power Attack സമനിലയിലായാൽ നാല് കാർഡുകളും നശിക്കും."
+        }
     },
     {
-        title: "Remember to Call GO!",
-        description:
-            "When your Lightning Card has a lower value than the opponent's Normal Card, you may launch an optional Power Attack. Press GO before touching your Power Cards! Touching a Power Card without calling GO results in a penalty: the computer collects both Combat Cards."
+        en: {
+            title: "Remember to Call GO!",
+            description:
+                "When your Lightning Card has a lower value than the opponent's Normal Card, you may launch an optional Power Attack. Press GO before touching your Power Cards! Touching a Power Card without calling GO results in a penalty: the computer collects both Combat Cards."
+        },
+        ml: {
+            title: "GO എന്ന് പറയാൻ ഓർക്കുക! (Remember to Call GO!)",
+            description:
+                "നിങ്ങളുടെ Lightning Card-ന്റെ മൂല്യം എതിരാളിയുടെ Normal Card-നേക്കാൾ കുറവാണെങ്കിൽ, നിങ്ങൾക്ക് വേണമെങ്കിൽ ഒരു Power Attack ആരംഭിക്കാം. Power Cards തൊടുന്നതിന് മുൻപ് GO അമർത്തുക! GO പറയാതെ Power Card തൊട്ടാൽ പിഴ ലഭിക്കും: കമ്പ്യൂട്ടർ രണ്ട് Combat Cards-ഉം കൈക്കലാക്കും."
+        }
     },
     {
-        title: "Special Cards and Winning",
-        description:
-            "A Destructor destroys both Combat Cards. When all Combat Cards have been played, the player with more Resting Cards wins. If scores are tied, Sudden Death begins!"
+        en: {
+            title: "Special Cards and Winning",
+            description:
+                "A Destructor destroys both Combat Cards. When all Combat Cards have been played, the player with more Resting Cards wins. If scores are tied, Sudden Death begins!"
+        },
+        ml: {
+            title: "പ്രത്യേക കാർഡുകളും വിജയവും (Special Cards and Winning)",
+            description:
+                "ഒരു Destructor രണ്ട് Combat Cards-നെയും നശിപ്പിക്കുന്നു. എല്ലാ Combat Cards-ഉം കളിച്ചു കഴിയുമ്പോൾ, കൂടുതൽ Resting Cards ഉള്ള കളിക്കാരൻ വിജയിക്കും. സ്കോറുകൾ സമനിലയിലായാൽ, Sudden Death ആരംഭിക്കും!"
+        }
     }
 ];
 
@@ -87,12 +129,13 @@ let currentTutorialStep = 0;
 
 function showTutorialStep() {
     const step = tutorialSteps[currentTutorialStep];
+    const lang = gameState.tutorialLanguage;
 
     document.getElementById("tutorial-title").textContent =
-        step.title;
+        step[lang].title;
 
     document.getElementById("tutorial-description").textContent =
-        step.description;
+        step[lang].description;
 
     document.getElementById("tutorial-step-count").textContent =
         `STEP ${currentTutorialStep + 1} OF ${tutorialSteps.length}`;
@@ -929,6 +972,13 @@ function startSuddenDeath() {
 }
 
 
+function setLanguage(lang) {
+    gameState.tutorialLanguage = lang;
+    document.getElementById("btn-en").classList.toggle("active", lang === "en");
+    document.getElementById("btn-ml").classList.toggle("active", lang === "ml");
+    showTutorialStep();
+}
+
 document
     .getElementById("power-selection-close-button")
     .addEventListener("click", () => {
@@ -1036,31 +1086,9 @@ document.getElementById("tutorial-skip-button")
         closeTutorialAndStart();
     });
 
-// Shared Power deck
-// document.querySelector("#power-cards .card-back")
-//     .addEventListener("click", drawPlayerPowerCard);
 
-// document.querySelector("#power-cards .card-back")
-//     .addEventListener("click", function () {
-
-//         // Player touched Power deck without declaring GO
-//         if (gameState.phase === "optional-power-attack") {
-
-//             alert("STOP! You must declare GO before touching the Power deck.");
-
-//             applyGoPenalty();
-
-//             return;
-//         }
-
-//         // Player correctly declared GO
-//         if (gameState.phase === "waiting-player-power") {
-
-//             drawPlayerPowerCard();
-
-//         }
-
-//     });
+document.getElementById("btn-en").addEventListener("click", () => setLanguage("en"));
+document.getElementById("btn-ml").addEventListener("click", () => setLanguage("ml"));
 
 // PLAY button in the modal
 document.getElementById("power-play-button")
