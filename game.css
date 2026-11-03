@@ -151,18 +151,21 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 10px;
+    font-size: 8px;
     text-align: center;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 
 #game-status {
     margin-top: 25px;
     color: #f5d76e;
+    font-weight: bold;
 }
 
-.power-card {
+.power-card.game-card, .power-card {
     background-color: #d4a017;
-    color: #222;
+    color: #000000;
     border-color: #fff2b2;
 }
 
@@ -181,28 +184,11 @@ body {
     font-size: 30px;
     font-weight: bold;
     color: #f5f0dc;
-}
-
-.card-back::before,
-.card-back::after {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    border: 2px solid #f5f0dc;
-    border-radius: 10px;
-    z-index: 0;
-    pointer-events: none;
-}
-
-.card-back::before {
-    top: 3px;
-    left: 3px;
-}
-
-.card-back::after {
-    top: 6px;
-    left: 6px;
+    /* Creates the stack effect automatically */
+    box-shadow: 
+        3px 3px 0px 0px #2c3e50,  /* First card layer offset */
+        5px 5px 0px 0px #f5f0dc,  /* Second card layer offset (border color) */
+        8px 8px 12px rgba(0, 0, 0, 0.4); /* Drop shadow for depth */
 }
 
 .red-back {
@@ -286,7 +272,14 @@ body {
 .game-card {
     width: 55px;
     height: 80px;
-    font-size: 11px;
+    font-size: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: white;
+    color: black;
+    font-weight: 500;
 }
 
 /* Go button */
@@ -336,6 +329,8 @@ body {
     padding: 12px;
     margin: 10px 0;
     background: rgba(255, 255, 255, 0.05);
+    max-width: 70px;
+    width: 100%;
 }
 
 .pile-cards {
@@ -577,8 +572,14 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 10px;
+    font-size: 8px;
     font-weight: bold;
+    cursor: pointer;
+}
+
+.power-row-card:hover {
+    transform: scale(1.1);
+    transition: all 0.2s linear;
 }
 
 .power-row-card.used {

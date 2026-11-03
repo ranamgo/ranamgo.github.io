@@ -182,14 +182,14 @@ function renderPowerRows() {
     gameState.computerPowerDeck.forEach(card => {
         const element = document.createElement("div");
         element.className = "power-row-card";
-        element.textContent = "POWER";
+        element.textContent = "POWER CARD";
         computerRow.appendChild(element);
     });
 
     gameState.playerPowerDeck.forEach(card => {
         const element = document.createElement("div");
         element.className = "power-row-card";
-        element.textContent = "POWER";
+        element.textContent = "POWER CARD";
         element.dataset.powerId = card.id;
         playerRow.appendChild(element);
     });
@@ -915,10 +915,10 @@ function finishBattle() {
     setTimeout(() => {
 
         // Clear all four battlefield slots.
-        document.getElementById("computer-power-slot").innerHTML = "Comp";
-        document.getElementById("computer-slot").innerHTML = "Comp";
-        document.getElementById("player-slot").innerHTML = "You";
-        document.getElementById("player-power-slot").innerHTML = "You";
+        document.getElementById("computer-power-slot").innerHTML = "COMPUTER POWER CARD SLOT";
+        document.getElementById("computer-slot").innerHTML = "COMPUTER COMBAT CARD SLOT";
+        document.getElementById("player-slot").innerHTML = "YOUR POWER CARD SLOT";
+        document.getElementById("player-power-slot").innerHTML = "YOUR POWER CARD SLOT";
 
         // Reset the cards used in this battle.
         gameState.playerCard = null;
@@ -952,6 +952,14 @@ function startSuddenDeath() {
     // Shuffling the decks independently gives the same result.
     gameState.playerDeck = shuffleCards(playerSuddenDeck);
     gameState.computerDeck = shuffleCards(computerSuddenDeck);
+
+    // Restore both draw deck visuals
+    document.querySelector("#player-cards .card-back")
+        .classList.remove("deck-empty");
+
+    document.querySelector("#computer-cards .card-back")
+        .classList.remove("deck-empty");
+
 
     // Clear the Resting piles for the Sudden Death battle.
     // Their cards are now in the new Combat decks.

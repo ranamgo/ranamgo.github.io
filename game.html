@@ -9,13 +9,13 @@
   </head>
   <body>
     <main class="game-container">
-      <h1>My Card Game</h1>
+      <h1>RanamGo - Lightning</h1>
 
       <section class="game-board">
         <!-- LAYER 1: COMPUTER COMBAT CARDS -->
         <section class="player-row computer-row">
           <div class="pile">
-            <h4>Resting</h4>
+            <h4>Resting Cards</h4>
             <div id="computer-resting" class="pile-cards"></div>
             <span id="computer-resting-count">0</span>
           </div>
@@ -33,7 +33,7 @@
           </div>
 
           <div class="pile">
-            <h4>Dead</h4>
+            <h4>Dead Cards</h4>
             <div id="computer-dead" class="pile-cards"></div>
             <span id="computer-dead-count">0</span>
           </div>
@@ -55,14 +55,17 @@
           <h3>BATTLE FIELD</h3>
 
           <div class="battle-slots">
-            <div class="card-slot" id="computer-power-slot">COMPUTER POWER</div>
+            <div class="card-slot" id="computer-power-slot">COMPUTER POWER CARD SLOT</div>
 
-            <div class="card-slot" id="computer-slot">COMPUTER</div>
+            <div class="card-slot" id="computer-slot">COMPUTER COMBAT CARD SLOT</div>
 
-            <div class="card-slot" id="player-slot">YOU</div>
+            <div class="card-slot" id="player-slot">YOUR POWER CARD SLOT</div>
 
-            <div class="card-slot" id="player-power-slot">YOUR POWER</div>
+            <div class="card-slot" id="player-power-slot">YOUR POWER CARD SLOT</div>
           </div>
+
+          <div id="game-status">Ready to play</div>
+
         </section>
 
         <!-- LAYER 4: PLAYER POWER CARDS -->
@@ -79,7 +82,7 @@
         <!-- LAYER 5: PLAYER COMBAT CARDS -->
         <section class="player-row human-row">
           <div class="pile">
-            <h4>Dead</h4>
+            <h4>Dead Cards</h4>
             <div id="player-dead" class="pile-cards"></div>
             <span id="player-dead-count">0</span>
           </div>
@@ -97,7 +100,7 @@
           </div>
 
           <div class="pile">
-            <h4>Resting</h4>
+            <h4>Resting Cards</h4>
             <div id="player-resting" class="pile-cards"></div>
             <span id="player-resting-count">0</span>
           </div>
@@ -107,7 +110,6 @@
         <div class="go-area">
           <button id="go-button" disabled>GO!</button>
         </div>
-        <div id="game-status">Ready to play</div>
       </section>
       <!-- <p id="game-status">Game is ready to be built.</p> -->
     </main>
@@ -116,9 +118,7 @@
     <div id="tutorial-modal" class="modal hidden">
       <div class="modal-content tutorial-content">
         <div class="lang-toggle">
-          <button id="btn-en" class="active">
-            English
-          </button>
+          <button id="btn-en" class="active">English</button>
           <button id="btn-ml">മലയാളം</button>
         </div>
         <h2>HOW TO PLAY</h2>
