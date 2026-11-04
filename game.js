@@ -1309,7 +1309,7 @@ function finishBattle() {
                 "Ready for the next battle. Tap your Combat Card deck.";
         }
 
-    }, 1500);
+    }, 200);
 }
 
 
