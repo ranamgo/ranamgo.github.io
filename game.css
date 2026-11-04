@@ -573,7 +573,7 @@ body {
     margin-top: 5px;
 }
 
-#play-again-button {
+#play-again-button, #feedback-button {
     margin-top: 22px;
     padding: 12px 28px;
     border: none;
@@ -585,7 +585,12 @@ body {
     cursor: pointer;
 }
 
-#play-again-button:hover {
+#feedback-button {
+    text-decoration: none;
+}
+
+
+#play-again-button:hover, #feedback-button:hover {
     opacity: 0.85;
 }
 

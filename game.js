@@ -111,6 +111,18 @@ const tutorialSteps = [
     },
     {
         en: {
+            title: "Call NO!",
+            description:
+                "When you are eligible for an optional Power Attack and if you don't want to play a Power Attack, press “NO!” to decline. The battle will then be decided by the Combat Cards' values."
+        },
+        ml: {
+            title: "NO പറയുക! (Call NO!)",
+            description:
+                "നിങ്ങൾക്ക് ഓപ്ഷണൽ ആയ ഒരു Power Attack ചെയ്യാൻ അവസരമുണ്ടായിട്ടും അത് കളിക്കാൻ താത്പര്യമില്ലെങ്കിൽ, നിരസിക്കാൻ “NO!” അമർത്തുക. തുടർന്ന് Combat Cards-ന്റെ മൂല്യങ്ങൾ വെച്ചായിരിക്കും പോരാട്ടം തീരുമാനിക്കുന്നത്."
+        }
+    },
+    {
+        en: {
             title: "Special Cards and Winning",
             description:
                 "A Destructor destroys both Combat Cards. When all Combat Cards have been played, the player with more Resting Cards wins. If scores are tied, Sudden Death begins!"
