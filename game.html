@@ -55,17 +55,22 @@
           <h3>BATTLE FIELD</h3>
 
           <div class="battle-slots">
-            <div class="card-slot" id="computer-power-slot">COMPUTER POWER CARD SLOT</div>
+            <div class="card-slot" id="computer-power-slot">
+              COMPUTER POWER CARD SLOT
+            </div>
 
-            <div class="card-slot" id="computer-slot">COMPUTER COMBAT CARD SLOT</div>
+            <div class="card-slot" id="computer-slot">
+              COMPUTER COMBAT CARD SLOT
+            </div>
 
             <div class="card-slot" id="player-slot">YOUR POWER CARD SLOT</div>
 
-            <div class="card-slot" id="player-power-slot">YOUR POWER CARD SLOT</div>
+            <div class="card-slot" id="player-power-slot">
+              YOUR POWER CARD SLOT
+            </div>
           </div>
 
           <div id="game-status">Ready to play</div>
-
         </section>
 
         <!-- LAYER 4: PLAYER POWER CARDS -->
@@ -92,7 +97,9 @@
             <div id="player-cards" class="deck-container">
               <div class="card-back red-back">
                 <div class="card-back-pattern">
-                  <img src="./public/ranamgo_logo_v3.0.png" alt="RanamGo logo" />
+                  <img
+                    src="./public/ranamgo_logo_v3.0.png"
+                    alt="RanamGo logo" />
                 </div>
               </div>
             </div>
@@ -244,7 +251,53 @@
 
         <!-- PLAY AGAIN BUTTON -->
         <button id="play-again-button">PLAY AGAIN</button>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSepD5z3Kp5ancSZblmBYC_XOMTyLwGGI173fUWOsmF3MMaWdw/viewform?usp=publish-editor" id="feedback-button">SEND FEEDBACK</a>
+        <a
+          href="https://docs.google.com/forms/d/e/1FAIpQLSepD5z3Kp5ancSZblmBYC_XOMTyLwGGI173fUWOsmF3MMaWdw/viewform?usp=publish-editor"
+          id="feedback-button"
+          >SEND FEEDBACK</a
+        >
+      </div>
+    </div>
+
+    <!-- SUDDEN DEATH MODAL -->
+    <div id="sudden-death-modal" class="modal hidden">
+      <div class="modal-content sudden-death-content">
+        <h2>SUDDEN DEATH</h2>
+        <h1>THE FINAL SHOWDOWN</h1>
+
+        <p>The regular battle is over!</p>
+
+        <p>
+          Both players have the same number of Resting Cards. It's time to
+          settle the game through Sudden Death!
+        </p>
+
+        <div class="sudden-death-rules">
+          <h3>HOW IT WORKS</h3>
+
+          <ul>
+            <li>
+              Both players use their Resting Cards as their new Combat decks.
+            </li>
+
+            <li>Both players reveal one Combat Card in each battle.</li>
+
+            <li>
+              Power Attacks are allowed when enough Power Cards are available.
+            </li>
+
+            <li>
+              If a Power Attack is unavailable, the higher-value Combat Card
+              wins.
+            </li>
+
+            <li>If a Power Attack ends in a tie, the battle continues.</li>
+
+            <li>The first player to win a battle wins the game! (Higher-valued card wins the game)</li>
+          </ul>
+        </div>
+
+        <button id="sudden-death-begin-button">LET'S BEGIN</button>
       </div>
     </div>
 

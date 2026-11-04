@@ -1315,6 +1315,11 @@ function finishBattle() {
 
 function startSuddenDeath() {
 
+
+    // Show sudden death modal
+    document.getElementById("sudden-death-modal")
+        .classList.remove("hidden");
+
     // Take copies of both players' Resting Cards
     const playerSuddenDeck = [...gameState.playerResting];
     const computerSuddenDeck = [...gameState.computerResting];
@@ -1490,6 +1495,13 @@ document.getElementById("btn-ml").addEventListener("click", () => setLanguage("m
 // PLAY button in the modal
 document.getElementById("power-play-button")
     .addEventListener("click", playSecondPowerCard);
+
+
+document.getElementById("sudden-death-begin-button")
+    .addEventListener("click", () => {
+        document.getElementById("sudden-death-modal")
+            .classList.add("hidden");
+    });
 
 // initializePowerCards();
 showTutorial();
