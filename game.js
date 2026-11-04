@@ -387,8 +387,128 @@ function animateCardToPile(cardSlotId, pileId) {
     });
 }
 
+function animateCardFromDeck(deckId, slotId) {
 
-function selectPlayerPowerCard(cardId) {
+    return new Promise(resolve => {
+
+        const deck = document.getElementById(deckId);
+        const slot = document.getElementById(slotId);
+
+        const originalCard = deck.querySelector(".card-back");
+
+        if (!originalCard || !slot) {
+            resolve();
+            return;
+        }
+
+        const start = originalCard.getBoundingClientRect();
+        const end = slot.getBoundingClientRect();
+
+        const movingCard = originalCard.cloneNode(true);
+
+        movingCard.classList.add("moving-deck-card");
+
+        movingCard.style.left = `${start.left}px`;
+        movingCard.style.top = `${start.top}px`;
+        movingCard.style.width = `${start.width}px`;
+        movingCard.style.height = `${start.height}px`;
+
+        document.body.appendChild(movingCard);
+
+        // Establish the starting position.
+        movingCard.getBoundingClientRect();
+
+        // Move towards the battlefield slot.
+        movingCard.style.left =
+            `${end.left + end.width / 2 - start.width / 2}px`;
+
+        movingCard.style.top =
+            `${end.top + end.height / 2 - start.height / 2}px`;
+
+        let completed = false;
+
+        function completeAnimation() {
+            if (completed) return;
+
+            completed = true;
+            movingCard.remove();
+            resolve();
+        }
+
+        movingCard.addEventListener("transitionend", function (event) {
+            if (
+                event.target === movingCard &&
+                event.propertyName === "top"
+            ) {
+                completeAnimation();
+            }
+        });
+
+        // Safety fallback in case transitionend doesn't fire.
+        setTimeout(completeAnimation, 1000);
+    });
+}
+
+
+function animatePowerCardToSlot(cardElement, slotId) {
+
+    return new Promise(resolve => {
+
+        const slot = document.getElementById(slotId);
+
+        if (!cardElement || !slot) {
+            resolve();
+            return;
+        }
+
+        const start = cardElement.getBoundingClientRect();
+        const end = slot.getBoundingClientRect();
+
+        const movingCard = cardElement.cloneNode(true);
+
+        movingCard.classList.add("moving-deck-card");
+
+        movingCard.style.left = `${start.left}px`;
+        movingCard.style.top = `${start.top}px`;
+        movingCard.style.width = `${start.width}px`;
+        movingCard.style.height = `${start.height}px`;
+
+        document.body.appendChild(movingCard);
+
+        movingCard.getBoundingClientRect();
+
+        movingCard.style.left =
+            `${end.left + end.width / 2 - start.width / 2}px`;
+
+        movingCard.style.top =
+            `${end.top + end.height / 2 - start.height / 2}px`;
+
+        let completed = false;
+
+        function completeAnimation() {
+            if (completed) return;
+            completed = true;
+            movingCard.remove();
+            resolve();
+        }
+
+        movingCard.addEventListener("transitionend", function (event) {
+            if (event.propertyName === "top") {
+                completeAnimation();
+            }
+        });
+
+        setTimeout(completeAnimation, 1000);
+    });
+}
+
+
+
+
+async function selectPlayerPowerCard(cardId) {
+
+    if (gameState.phase !== "waiting-player-power") return;
+
     const card = findPowerCard(
         gameState.playerPowerDeck,
         cardId
@@ -396,8 +516,22 @@ function selectPlayerPowerCard(cardId) {
 
     if (!card) return;
 
-    if (gameState.phase !== "waiting-player-power") return;
+    // Find the selected card in the player's row.
+    const cardElement = Array.from(
+        document.getElementById("player-power-cards").children
+    ).find(element =>
+        element.dataset.powerId === String(card.id)
+    );
 
+    gameState.phase = "player-power-moving";
+
+    // Animate the selected card into the battlefield.
+    await animatePowerCardToSlot(
+        cardElement,
+        "player-power-slot"
+    );
+
+    // Store and reveal the selected Power Card.
     gameState.playerPowerCard = card;
 
     revealPowerCard(
@@ -405,6 +539,7 @@ function selectPlayerPowerCard(cardId) {
         document.getElementById("player-power-slot")
     );
 
+    // Remove the used card from the available deck.
     gameState.playerPowerDeck =
         gameState.playerPowerDeck.filter(
             item => item.id !== card.id
@@ -413,21 +548,22 @@ function selectPlayerPowerCard(cardId) {
     renderPowerRows();
     updateCounts();
 
-    // The computer responds after a short thinking delay.
+    // Computer thinks before responding.
     gameState.phase = "computer-thinking";
 
     document.getElementById("game-status").textContent =
         "Computer is thinking...";
 
     if (gameState.computerPowerCard) {
+
         // Computer already revealed its card.
-        // Player has now revealed the second card.
         setTimeout(() => {
             resolvePowerAttack();
         }, 1000);
 
     } else {
-        // Player revealed first, so computer must respond.
+
+        // Computer must reveal its card.
         setTimeout(() => {
             computerChoosePowerCard();
         }, 1800);
@@ -457,7 +593,8 @@ function renderPile(containerId, cards) {
 }
 
 
-function computerChoosePowerCard() {
+async function computerChoosePowerCard() {
+
     const deck = gameState.computerPowerDeck;
 
     if (deck.length === 0) return;
@@ -480,6 +617,21 @@ function computerChoosePowerCard() {
         ];
     }
 
+    // Find the selected card in the computer's row.
+    const cardElement = Array.from(
+        document.getElementById("computer-power-cards").children
+    ).find(element =>
+        element.dataset.powerId === String(chosenCard.id)
+    );
+
+    gameState.phase = "computer-power-moving";
+
+    // Animate the computer's card to its battlefield slot.
+    await animatePowerCardToSlot(
+        cardElement,
+        "computer-power-slot"
+    );
+
     gameState.computerPowerCard = chosenCard;
 
     revealPowerCard(
@@ -493,10 +645,12 @@ function computerChoosePowerCard() {
     renderPowerRows();
     updateCounts();
 
+    // Allow the player to see both revealed Power Cards.
     setTimeout(() => {
         resolvePowerAttack();
     }, 1000);
 }
+
 
 
 
@@ -538,9 +692,8 @@ function hideEmptyDeck(deck, selector) {
 
 
 // 6. Draw and reveal both Combat Cards
-function drawBattle() {
+async function drawBattle() {
 
-    // Only allow a new draw when the game is ready
     if (gameState.phase !== "ready") {
         return;
     }
@@ -555,11 +708,21 @@ function drawBattle() {
         return;
     }
 
+    gameState.phase = "dealing";
+
     gameState.playerCard = gameState.playerDeck.pop();
     gameState.computerCard = gameState.computerDeck.pop();
 
-    gameState.phase = "revealed";
+    // Update deck counts.
+    updateCounts();
 
+    // Animate both cards towards the battlefield.
+    await Promise.all([
+        animateCardFromDeck("player-cards", "player-slot"),
+        animateCardFromDeck("computer-cards", "computer-slot")
+    ]);
+
+    // Reveal both Combat Cards after they arrive.
     revealCard(
         gameState.computerCard,
         document.getElementById("computer-slot")
@@ -570,16 +733,14 @@ function drawBattle() {
         document.getElementById("player-slot")
     );
 
-    updateCounts();
+    gameState.phase = "revealed";
 
+    // Hide deck backs if the decks are empty.
     hideEmptyDeck(gameState.playerDeck, "#player-cards .card-back");
     hideEmptyDeck(gameState.computerDeck, "#computer-cards .card-back");
 
-    // document.getElementById("game-status").textContent =
-    //     "Cards revealed — resolving battle next.";
-
-    resolveBattle()
-
+    // Resolve the battle.
+    resolveBattle();
 }
 
 async function resolveBattle() {
@@ -704,15 +865,17 @@ async function resolveBattle() {
 }
 
 
-function startPowerAttack(firstPlayer) {
+async function startPowerAttack(firstPlayer) {
     gameState.firstPowerPlayer = firstPlayer;
 
-    // A Power Attack requires one available card from each player.
     if (
         gameState.playerPowerDeck.length < 1 ||
         gameState.computerPowerDeck.length < 1
     ) {
-        resolveByValue();
+        resolveByValue(
+            gameState.playerCard,
+            gameState.computerCard
+        );
         return;
     }
 
@@ -725,15 +888,26 @@ function startPowerAttack(firstPlayer) {
         return;
     }
 
-    // Computer reveals its first card.
     const deck = gameState.computerPowerDeck;
     const knownCard = gameState.computerKnownPower;
 
-    // Prefer its known card if it is still available.
     const chosenCard =
         knownCard && deck.some(card => card.id === knownCard.id)
             ? knownCard
             : deck[Math.floor(Math.random() * deck.length)];
+
+    // Find its current position in the computer's row.
+    const cardElement = Array.from(
+        document.getElementById("computer-power-cards").children
+    ).find(element => element.dataset.powerId === String(chosenCard.id));
+
+    gameState.phase = "computer-power-moving";
+
+    // Move the selected card to the battlefield.
+    await animatePowerCardToSlot(
+        cardElement,
+        "computer-power-slot"
+    );
 
     gameState.computerPowerCard = chosenCard;
 
