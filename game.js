@@ -48,7 +48,6 @@ const gameState = {
     phase: "computer-selecting"
 };
 
-
 const tutorialSteps = [
     {
         en: {
@@ -125,6 +124,15 @@ const tutorialSteps = [
 ];
 
 
+// Assign permanent positions after shuffling.
+gameState.playerPowerDeck.forEach((card, index) => {
+    card.position = index;
+});
+
+gameState.computerPowerDeck.forEach((card, index) => {
+    card.position = index;
+});
+
 let currentTutorialStep = 0;
 
 function showTutorialStep() {
@@ -179,20 +187,45 @@ function renderPowerRows() {
     computerRow.innerHTML = "";
     playerRow.innerHTML = "";
 
-    gameState.computerPowerDeck.forEach(card => {
-        const element = document.createElement("div");
-        element.className = "power-row-card";
-        element.textContent = "POWER CARD";
-        computerRow.appendChild(element);
-    });
+    // Render five fixed positions for the computer.
+    for (let i = 0; i < 5; i++) {
 
-    gameState.playerPowerDeck.forEach(card => {
+        const card = gameState.computerPowerDeck.find(
+            card => card.position === i
+        );
+
         const element = document.createElement("div");
-        element.className = "power-row-card";
-        element.textContent = "POWER CARD";
-        element.dataset.powerId = card.id;
+
+        if (card) {
+            element.className = "power-row-card";
+            element.textContent = "POWER CARD";
+            element.dataset.powerId = card.id;
+        } else {
+            element.className = "power-row-card empty";
+        }
+
+        computerRow.appendChild(element);
+    }
+
+    // Render five fixed positions for the player.
+    for (let i = 0; i < 5; i++) {
+
+        const card = gameState.playerPowerDeck.find(
+            card => card.position === i
+        );
+
+        const element = document.createElement("div");
+
+        if (card) {
+            element.className = "power-row-card";
+            element.textContent = "POWER CARD";
+            element.dataset.powerId = card.id;
+        } else {
+            element.className = "power-row-card empty";
+        }
+
         playerRow.appendChild(element);
-    });
+    }
 }
 
 

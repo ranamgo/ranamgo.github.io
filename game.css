@@ -695,6 +695,11 @@ body {
     visibility: hidden;
 }
 
+.power-row-card.empty {
+    visibility: hidden;
+    pointer-events: none;
+}
+
 
 /* HOW TO PLAY TUTORIAL */
 
