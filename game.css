@@ -110,9 +110,9 @@ body {
     font-size: 12px;
 }
 
-.pile-cards {
+/* .pile-cards {
     min-height: 18px;
-}
+} */
 
 .pile span,
 .deck-area span,
@@ -185,10 +185,13 @@ body {
     font-weight: bold;
     color: #f5f0dc;
     /* Creates the stack effect automatically */
-    box-shadow: 
-        3px 3px 0px 0px #2c3e50,  /* First card layer offset */
-        5px 5px 0px 0px #f5f0dc,  /* Second card layer offset (border color) */
-        8px 8px 12px rgba(0, 0, 0, 0.4); /* Drop shadow for depth */
+    box-shadow:
+        3px 3px 0px 0px #2c3e50,
+        /* First card layer offset */
+        5px 5px 0px 0px #f5f0dc,
+        /* Second card layer offset (border color) */
+        8px 8px 12px rgba(0, 0, 0, 0.4);
+    /* Drop shadow for depth */
 }
 
 .red-back {
@@ -236,7 +239,7 @@ body {
     border: 1px solid #777;
     border-radius: 10px;
     padding: 6px;
-    
+
 }
 
 .battle-area {
@@ -286,19 +289,27 @@ body {
 .go-area {
     display: flex;
     justify-content: center;
+    gap: 10px;
 }
 
-#go-button {
+#go-button, #no-button {
     padding: 7px 30px;
     border: none;
     border-radius: 8px;
-    background: #16834a;
     color: white;
     font-weight: bold;
     cursor: pointer;
 }
 
-#go-button:disabled {
+#go-button {
+    background: #16834a;
+}
+
+#no-button {
+    background: #831616;
+}
+
+#go-button:disabled, #no-button:disabled {
     background: #777;
     cursor: not-allowed;
 }
@@ -323,22 +334,106 @@ body {
     min-width: 220px;
 }
 
+/* Pile Container - Resting and Dead */
+
 .pile {
     border: 1px solid #777;
     border-radius: 8px;
     padding: 12px;
     margin: 10px 0;
     background: rgba(255, 255, 255, 0.05);
-    max-width: 70px;
+    /* max-width: 70px; */
     width: 100%;
 }
 
 .pile-cards {
+    position: relative;
     display: flex;
     flex-wrap: wrap;
     gap: 5px;
     min-height: 30px;
+    width: 55px;
+    height: 75px;
+    margin: 8px auto;
 }
+
+/* .pile-cards {
+    position: relative;
+    width: 55px;
+    height: 75px;
+    margin: 8px auto;
+} */
+
+/* .pile-card {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 6px;
+    background: linear-gradient(135deg, #263b68, #14213d);
+    border: 2px solid #d4af37;
+    box-sizing: border-box;
+    box-shadow:
+        2px 2px 0 #777,
+        4px 4px 0 #555;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+} */
+
+.pile-card {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 55px;
+    height: 75px;
+    box-sizing: border-box;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+
+.pile-card img {
+    width: 75%;
+    height: 75%;
+    object-fit: contain;
+}
+
+/* Add visible depth as cards accumulate */
+.pile-card:nth-child(2) {
+    box-shadow: 2px 2px 0 #777, 4px 4px 0 #555,
+        6px 6px 0 #444;
+}
+
+.pile-card:nth-child(3) {
+    box-shadow: 2px 2px 0 #777, 4px 4px 0 #555,
+        6px 6px 0 #444, 8px 8px 0 #333;
+}
+
+/* Card-back pattern alignment */
+.pile-card .card-back-pattern {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pile-card .card-back-pattern img {
+    display: block;
+    width: 75%;
+    height: 75%;
+    object-fit: contain;
+}
+
+
+/* 
+.pile-cards {
+    
+    width: 55px;
+    height: 75px;
+    margin: 8px auto;
+} */
 
 .pile p {
     margin-bottom: 0;
@@ -495,6 +590,20 @@ body {
 }
 
 
+/* Card movement towards a collection pile */
+.moving-card {
+    position: fixed !important;
+    z-index: 9999 !important;
+    margin: 0 !important;
+    pointer-events: none;
+    transition:
+        left 0.65s ease-in-out,
+        top 0.65s ease-in-out,
+        width 0.65s ease-in-out,
+        height 0.65s ease-in-out;
+}
+
+
 /* INITIAL POWER CARD SELECTION */
 
 .power-selection-content {
@@ -597,8 +706,10 @@ body {
 }
 
 .lang-toggle button {
-    padding: 4px 10px;          /* Made padding smaller */
-    font-size: 12px;            /* Reduced font size */
+    padding: 4px 10px;
+    /* Made padding smaller */
+    font-size: 12px;
+    /* Reduced font size */
     border: 1px solid #ccc;
     background: #fff;
     cursor: pointer;
@@ -614,87 +725,111 @@ body {
 }
 
 .tutorial-content {
-  width: min(520px, 94vw);
-  text-align: center;
-  padding: 25px;
+    width: min(520px, 94vw);
+    text-align: center;
+    padding: 25px;
 }
 
 .tutorial-progress {
-  margin: 20px 0;
+    margin: 20px 0;
 }
 
 #tutorial-step-count {
-  display: block;
-  font-size: 12px;
-  margin-bottom: 8px;
-  font-weight: bold;
+    display: block;
+    font-size: 12px;
+    margin-bottom: 8px;
+    font-weight: bold;
 }
 
 .tutorial-progress-track {
-  width: 100%;
-  height: 7px;
-  background: #ddd;
-  border-radius: 10px;
-  overflow: hidden;
+    width: 100%;
+    height: 7px;
+    background: #ddd;
+    border-radius: 10px;
+    overflow: hidden;
 }
 
 #tutorial-progress-fill {
-  width: 16.66%;
-  height: 100%;
-  background: #d4a017;
-  transition: width 0.3s ease;
+    width: 16.66%;
+    height: 100%;
+    background: #d4a017;
+    transition: width 0.3s ease;
 }
 
 .tutorial-step {
-  min-height: 150px;
-  padding: 20px 10px;
+    min-height: 150px;
+    padding: 20px 10px;
 }
 
 .tutorial-step h3 {
-  font-size: 21px;
-  margin-bottom: 15px;
+    font-size: 21px;
+    margin-bottom: 15px;
 }
 
 .tutorial-step p {
-  font-size: 15px;
-  line-height: 1.7;
+    font-size: 15px;
+    line-height: 1.7;
 }
 
 .tutorial-buttons {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 15px;
 }
 
 .tutorial-buttons button {
-  padding: 10px 15px;
-  border: none;
-  border-radius: 7px;
-  cursor: pointer;
-  font-weight: bold;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    font-weight: bold;
 }
 
 #tutorial-back-button {
-  background: #777;
-  color: white;
+    background: #777;
+    color: white;
 }
 
 #tutorial-next-button {
-  background: #16834a;
-  color: white;
+    background: #16834a;
+    color: white;
 }
 
 #tutorial-skip-button {
-  background: #ddd;
-  color: #222;
+    background: #ddd;
+    color: #222;
 }
 
 .tutorial-buttons button:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+
+/* Combat card reveal animation */
+@keyframes cardFlip {
+    0% {
+        transform: perspective(800px) rotateY(90deg) scale(0.9);
+        opacity: 0;
+    }
+
+    60% {
+        transform: perspective(800px) rotateY(-10deg) scale(1.03);
+        opacity: 1;
+    }
+
+    100% {
+        transform: perspective(800px) rotateY(0deg) scale(1);
+        opacity: 1;
+    }
+}
+
+.game-card.reveal-animation {
+    animation: cardFlip 0.5s ease-out both;
+    transform-style: preserve-3d;
 }
 
 

@@ -293,11 +293,65 @@ function updateCounts() {
 
     document.getElementById("computer-dead-count").textContent =
         gameState.computerDead.length;
+
+    renderPile("computer-resting", gameState.computerResting);
+    renderPile("computer-dead", gameState.computerDead);
+
+    renderPile("player-resting", gameState.playerResting);
+    renderPile("player-dead", gameState.playerDead);
 }
 
 
 function findPowerCard(deck, cardId) {
     return deck.find(card => card.id === cardId);
+}
+
+function animateCardToPile(cardSlotId, pileId) {
+    return new Promise(resolve => {
+        const slot = document.getElementById(cardSlotId);
+        const pile = document.getElementById(pileId);
+        const originalCard = slot.querySelector(".game-card");
+
+        if (!originalCard || !pile) {
+            resolve();
+            return;
+        }
+
+        const start = originalCard.getBoundingClientRect();
+        const end = pile.getBoundingClientRect();
+
+        const movingCard = originalCard.cloneNode(true);
+
+        movingCard.classList.remove("reveal-animation");
+        movingCard.classList.add("moving-card");
+
+        movingCard.style.left = `${start.left}px`;
+        movingCard.style.top = `${start.top}px`;
+        movingCard.style.width = `${start.width}px`;
+        movingCard.style.height = `${start.height}px`;
+
+        document.body.appendChild(movingCard);
+
+        // Trigger the starting position.
+        movingCard.getBoundingClientRect();
+
+        movingCard.style.left =
+            `${end.left + end.width / 2 - start.width / 2}px`;
+
+        movingCard.style.top =
+            `${end.top + end.height / 2 - start.height / 2}px`;
+
+        movingCard.style.width = "40px";
+        movingCard.style.height = "55px";
+
+        movingCard.addEventListener("transitionend", function handler(event) {
+            if (event.propertyName !== "top") return;
+
+            movingCard.removeEventListener("transitionend", handler);
+            movingCard.remove();
+            resolve();
+        });
+    });
 }
 
 
@@ -345,6 +399,28 @@ function selectPlayerPowerCard(cardId) {
             computerChoosePowerCard();
         }, 1800);
     }
+}
+
+
+function renderPile(containerId, cards) {
+    const pile = document.getElementById(containerId);
+
+    pile.innerHTML = "";
+
+    cards.forEach(card => {
+        const cardElement = document.createElement("div");
+
+        cardElement.classList.add("pile-card");
+        cardElement.classList.add(card.colour + "-back");
+
+        cardElement.innerHTML = `
+            <div class="card-back-pattern">
+                <img src="./public/ranamgo_logo_v3.0.png" alt="Card back">
+            </div>
+        `;
+
+        pile.appendChild(cardElement);
+    });
 }
 
 
@@ -413,6 +489,8 @@ function revealCard(card, slot) {
         `;
     }
 
+    cardElement.classList.add("reveal-animation");
+
     slot.appendChild(cardElement);
 }
 
@@ -471,7 +549,7 @@ function drawBattle() {
 
 }
 
-function resolveBattle() {
+async function resolveBattle() {
 
     const player = gameState.playerCard;
     const computer = gameState.computerCard;
@@ -489,6 +567,17 @@ function resolveBattle() {
 
         document.getElementById("game-status").textContent =
             "Destructor! Both cards are destroyed.";
+
+        updateCounts();
+
+        // Let players see the Destructor battle first.
+        await new Promise(resolve => setTimeout(resolve, 1200));
+
+        // Move both cards to their owners' Dead piles.
+        await Promise.all([
+            animateCardToPile("player-slot", "player-dead"),
+            animateCardToPile("computer-slot", "computer-dead")
+        ]);
 
         finishBattle();
         return;
@@ -553,6 +642,7 @@ function resolveBattle() {
             if (player.type === "lightning") {
 
                 document.getElementById("go-button").disabled = false;
+                document.getElementById("no-button").disabled = false;
 
                 gameState.phase = "optional-power-attack";
 
@@ -742,73 +832,134 @@ function playSecondPowerCard() {
 
 
 // Compare Power Cards and resolve the battle
-function resolvePowerAttack() {
+async function resolvePowerAttack() {
     const playerPower = gameState.playerPowerCard;
     const computerPower = gameState.computerPowerCard;
 
     if (!playerPower || !computerPower) return;
 
-    // Both Power Cards are spent.
+    // Both Power Cards go to their owners' Dead piles.
     gameState.playerDead.push(playerPower);
     gameState.computerDead.push(computerPower);
 
+    const animations = [
+        animateCardToPile("player-power-slot", "player-dead"),
+        animateCardToPile("computer-power-slot", "computer-dead")
+    ];
+
     if (playerPower.rank < computerPower.rank) {
-        // Player wins: collect both Combat Cards.
+
         gameState.playerResting.push(gameState.playerCard);
         gameState.playerResting.push(gameState.computerCard);
 
         document.getElementById("game-status").textContent =
             "Your Power Card wins! You collect both Combat Cards.";
 
+        animations.push(
+            animateCardToPile("player-slot", "player-resting"),
+            animateCardToPile("computer-slot", "player-resting")
+        );
+
     } else if (computerPower.rank < playerPower.rank) {
-        // Computer wins: collect both Combat Cards.
+
         gameState.computerResting.push(gameState.computerCard);
         gameState.computerResting.push(gameState.playerCard);
 
         document.getElementById("game-status").textContent =
             "Computer wins the Power Attack and collects both Combat Cards.";
 
+        animations.push(
+            animateCardToPile("player-slot", "computer-resting"),
+            animateCardToPile("computer-slot", "computer-resting")
+        );
+
     } else {
-        // Equal Power ranks: all four cards go to their owners' Dead piles.
+
         gameState.playerDead.push(gameState.playerCard);
         gameState.computerDead.push(gameState.computerCard);
 
         document.getElementById("game-status").textContent =
             "Power Attack tied! All four cards are destroyed.";
+
+        animations.push(
+            animateCardToPile("player-slot", "player-dead"),
+            animateCardToPile("computer-slot", "computer-dead")
+        );
     }
+
+    updateCounts();
+
+    // Wait until all cards finish moving.
+    await Promise.all(animations);
 
     gameState.playerPowerCard = null;
     gameState.computerPowerCard = null;
 
-    updateCounts();
-
-    setTimeout(() => {
-        finishBattle();
-    }, 1500);
+    finishBattle();
 }
 
 
 // Resolve a battle using Combat Card values
-function resolveByValue(player, computer) {
+async function resolveByValue(player, computer) {
+
+    let winner = null;
+    const animations = [];
 
     if (player.value > computer.value) {
+
         gameState.playerResting.push(player);
         gameState.computerDead.push(computer);
+
+        winner = "player";
 
         document.getElementById("game-status").textContent =
             "You win this battle!";
 
+        animations.push(
+            () => animateCardToPile("player-slot", "player-resting"),
+            () => animateCardToPile("computer-slot", "computer-dead")
+        )
+
     } else if (computer.value > player.value) {
+
         gameState.computerResting.push(computer);
         gameState.playerDead.push(player);
+
+        winner = "computer";
 
         document.getElementById("game-status").textContent =
             "Computer wins this battle!";
 
+        animations.push(
+            () => animateCardToPile("computer-slot", "computer-resting"),
+            () => animateCardToPile("player-slot", "player-dead")
+        )
+    }
+
+    await new Promise(resolve => setTimeout(resolve, 1200));
+    await Promise.all(animations.map(animation => animation()));
+
+    updateCounts();
+
+    // Sudden Death: first battle winner wins the game.
+    if (gameState.isSuddenDeath && winner !== null) {
+
+        gameState.phase = "game-over";
+
+        await Promise.all(animations);
+
+        setTimeout(() => {
+            showGameOver(winner);
+        }, 500);
+
+        return;
     }
 
     finishBattle();
 }
+
+
+
 
 function revealPowerCard(card, slot) {
 
@@ -910,6 +1061,7 @@ function finishBattle() {
     gameState.phase = "finishing";
 
     document.getElementById("go-button").disabled = true;
+    document.getElementById("no-button").disabled = true;
 
     // Keep the revealed cards visible for 1.5 seconds.
     setTimeout(() => {
@@ -1043,6 +1195,24 @@ document.getElementById("go-button")
 
     });
 
+
+document.getElementById("no-button")
+    .addEventListener("click", function () {
+
+        if (gameState.phase !== "optional-power-attack") return;
+
+        document.getElementById("go-button").disabled = true;
+        document.getElementById("no-button").disabled = true;
+
+        document.getElementById("game-status").textContent =
+            "You declined the Power Attack.";
+
+        resolveByValue(
+            gameState.playerCard,
+            gameState.computerCard
+        );
+
+    });
 
 document
     .getElementById("player-power-cards")
