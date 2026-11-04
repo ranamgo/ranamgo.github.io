@@ -4,251 +4,351 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/png" href="./public/ranamgo_logo_v3.0.png" />
-    <title>Play game!</title>
-    <link rel="stylesheet" href="game.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet" />
+    <!-- Updated to stable Bootstrap 5.3.3 -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous" />
+    <link rel="stylesheet" href="style.css" />
+    <title>RanamGo</title>
   </head>
   <body>
-    <main class="game-container">
-      <h2>RanamGo - Lightning (Playtesting)</h2>
+    <header class="side-padding">
+      <!-- As a link -->
+      <nav class="navbar fg-2">
+        <div>
+          <a class="navbar-brand d-flex align-items-stretch gap-2" href="/">
+            <img
+              src="/public/ranamgo_logo_v3.0.png"
+              alt="RanamGo"
+              class="logo"
+              width="70"
+              height="70" />
+            <h1>RanamGo</h1>
+          </a>
+        </div>
+      </nav>
+    </header>
 
-      <section class="game-board">
-        <!-- LAYER 1: COMPUTER COMBAT CARDS -->
-        <section class="player-row computer-row">
-          <div class="pile">
-            <h4>Resting Cards</h4>
-            <div id="computer-resting" class="pile-cards"></div>
-            <span id="computer-resting-count">0</span>
+    <!-- Banner -->
+    <section class="section side-padding">
+      <div class="row w-100 d-flex align-items-center">
+        <div class="col-md-12 col-lg-6">
+          <div class="d-flex flex-column gap-3">
+            <div class="main-heading text-center text-lg-start">
+              a two player card experience
+            </div>
+            <p class="text-center text-lg-start">
+              A fast paced, two player card game combining luck, tactical
+              decisions, and Power Attack.
+            </p>
+            <div
+              class="row border-top pt-4 text-center text-lg-start gap-lg-0 gap-4">
+              <div class="col-lg-4 col-md-12 col-sm-12">
+                <div
+                  class="fs-3 anton text-uppercase"
+                  style="color: var(--primary-color)">
+                  2 - 8 min
+                </div>
+                <div class="mont text-uppercase">match pace</div>
+              </div>
+              <div class="col-lg-4 col-md-12 col-sm-12">
+                <div
+                  class="fs-3 anton text-uppercase"
+                  style="color: var(--primary-color)">
+                  2 players
+                </div>
+                <div class="mont text-uppercase">pure duel</div>
+              </div>
+              <div class="col-lg-4 col-md-12 col-sm-12">
+                <div
+                  class="fs-3 anton text-uppercase"
+                  style="color: var(--primary-color)">
+                  40 cards
+                </div>
+                <div class="mont text-uppercase">core deck</div>
+              </div>
+            </div>
           </div>
+        </div>
+        <div class="col-md-12 col-lg-6">
+          <div class="card-stack">
+            <div class="card bottom-card">
+              <img
+                src="./public/destructor_card.png"
+                alt="RanamGo - 2 player card game lightning card" />
+            </div>
 
-          <div class="deck-area">
-            <h3>COMPUTER</h3>
-            <div id="computer-cards" class="deck-container">
-              <div class="card-back blue-back">
-                <div class="card-back-pattern">
-                  <img src="./public/ranamgo_logo_v3.0.png" alt="ranamGo" />
+            <!-- Middle Card (Rotated Left) -->
+            <div class="card middle-card">
+              <img
+                src="./public/normal_card.png"
+                alt="RanamGo - 2 player card game lightning card" />
+            </div>
+
+            <!-- Top Card (Vertical) -->
+            <div class="card top-card">
+              <img
+                src="./public/power_card.png"
+                alt="RanamGo - 2 player card game lightning card" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Game modes -->
+    <section
+      class="section side-padding py-5 text-white d-flex align-items-center"
+      style="background-color: var(--primary-color)">
+      <div class="flex-column gap-3">
+        <div class="main-heading text-lg-start text-center">three ways to play</div>
+        <p class="text-center text-lg-start" style="max-width: 1000px">
+          RanamGo is an independently developed card game currently available
+          for early playtesting. The game can be played in three exciting modes:
+          Lightning, Thunder, and Typhoon. Try the
+          <a
+             href="#contact-section" style="color: white;">online game, explore the Print & Play edition, and share your
+            feedback</a
+          >
+          to help shape RanamGo's future.
+        </p>
+        <div class="row g-4">
+          <!-- Card Item 1 -->
+          <div class="col-12 col-md-4">
+            <div class="custom-card p-4 shadow-sm h-100">
+              <div class="d-flex flex-column h-100 justify-content-between">
+                <div>
+                  <img
+                    class="mode-icon mb-2"
+                    src="./public/lightning-icon.svg"
+                    alt="RanamGo - a 2 player game - lightning mode" />
+                  <h4 class="fw-bold mb-1 text-black text-uppercase">
+                    Lightning
+                  </h4>
+                  <p class="text-muted mb-0">
+                    A fast-paced mode based on simultaneous card reveals.
+                  </p>
+                </div>
+                <div
+                  class="d-flex justify-content-between align-items-center pt-3 border-top text-secondary small">
+                  <span class="fw-bold fs-5">2 Players</span>
+                  <span
+                    class="fw-semibold fs-5"
+                    style="color: var(--primary-color)"
+                    >2 min</span
+                  >
                 </div>
               </div>
             </div>
-            <span>Cards: <span id="computer-count">15</span></span>
           </div>
 
-          <div class="pile">
-            <h4>Dead Cards</h4>
-            <div id="computer-dead" class="pile-cards"></div>
-            <span id="computer-dead-count">0</span>
-          </div>
-        </section>
-
-        <!-- LAYER 2: COMPUTER POWER CARDS -->
-        <section class="power-row computer-power-row">
-          <h3>COMPUTER POWER CARDS</h3>
-
-          <div id="computer-power-cards" class="power-card-row">
-            <!-- Five Power Cards will be created by JavaScript -->
-          </div>
-
-          <span>Remaining: <span id="computer-power-count">5</span></span>
-        </section>
-
-        <!-- LAYER 3: BATTLEFIELD -->
-        <section class="battle-area">
-          <h3>BATTLE FIELD</h3>
-
-          <div class="battle-slots">
-            <div class="card-slot" id="computer-power-slot">COMPUTER POWER CARD SLOT</div>
-
-            <div class="card-slot" id="computer-slot">COMPUTER COMBAT CARD SLOT</div>
-
-            <div class="card-slot" id="player-slot">YOUR POWER CARD SLOT</div>
-
-            <div class="card-slot" id="player-power-slot">YOUR POWER CARD SLOT</div>
-          </div>
-
-          <div id="game-status">Ready to play</div>
-
-        </section>
-
-        <!-- LAYER 4: PLAYER POWER CARDS -->
-        <section class="power-row player-power-row">
-          <h3>YOUR POWER CARDS</h3>
-
-          <div id="player-power-cards" class="power-card-row">
-            <!-- Five Power Cards will be created by JavaScript -->
-          </div>
-
-          <span>Remaining: <span id="player-power-count">5</span></span>
-        </section>
-
-        <!-- LAYER 5: PLAYER COMBAT CARDS -->
-        <section class="player-row human-row">
-          <div class="pile">
-            <h4>Dead Cards</h4>
-            <div id="player-dead" class="pile-cards"></div>
-            <span id="player-dead-count">0</span>
-          </div>
-
-          <div class="deck-area">
-            <h3>YOU</h3>
-            <div id="player-cards" class="deck-container">
-              <div class="card-back red-back">
-                <div class="card-back-pattern">
-                  <img src="./public/ranamgo_logo_v3.0.png" alt="ranamGo" />
+          <!-- Card Item 2 -->
+          <div class="col-12 col-md-4">
+            <div class="custom-card p-4 shadow-sm h-100">
+              <div class="d-flex flex-column h-100 justify-content-between">
+                <div>
+                  <img
+                    class="mode-icon mb-2"
+                    src="./public/thunder-icon.svg"
+                    alt="RanamGo - a 2 player game - thunder mode" />
+                  <h4 class="fw-bold mb-1 text-black text-uppercase">
+                    Thunder
+                  </h4>
+                  <p class="text-muted mb-0">
+                    A strategic mode where players select cards from their
+                    hands.
+                  </p>
+                </div>
+                <div
+                  class="d-flex justify-content-between align-items-center pt-3 border-top text-secondary small">
+                  <span class="fw-bold fs-5">2 Players</span>
+                  <span
+                    class="fw-semibold fs-5"
+                    style="color: var(--primary-color)"
+                    >4 min</span
+                  >
                 </div>
               </div>
             </div>
-            <span>Cards: <span id="player-count">15</span></span>
           </div>
 
-          <div class="pile">
-            <h4>Resting Cards</h4>
-            <div id="player-resting" class="pile-cards"></div>
-            <span id="player-resting-count">0</span>
+          <!-- Card Item 3 -->
+          <div class="col-12 col-md-4">
+            <div class="custom-card p-4 shadow-sm h-100">
+              <div class="d-flex flex-column h-100 justify-content-between">
+                <div>
+                  <img
+                    class="mode-icon mb-2"
+                    src="./public/typhoon-icon.svg"
+                    alt="RanamGo - a 2 player game - typhoon mode" />
+                  <h4 class="fw-bold mb-1 text-black text-uppercase">
+                    Typhoon
+                  </h4>
+                  <p class="text-muted mb-0">
+                    A tactical mode with an opening battle to determine the
+                    first player
+                  </p>
+                </div>
+                <div
+                  class="d-flex justify-content-between align-items-center pt-3 border-top text-secondary small">
+                  <span class="fw-bold fs-5">2 Players</span>
+                  <span
+                    class="fw-semibold fs-5"
+                    style="color: var(--primary-color)"
+                    >8 min</span
+                  >
+                </div>
+              </div>
+            </div>
           </div>
-        </section>
-
-        <!-- GO BUTTON -->
-        <div class="go-area">
-          <button id="go-button" disabled>GO!</button>
-          <button id="no-button" disabled>NO!</button>
-        </div>
-      </section>
-      <!-- <p id="game-status">Game is ready to be built.</p> -->
-    </main>
-
-    <!-- HOW TO PLAY TUTORIAL -->
-    <div id="tutorial-modal" class="modal hidden">
-      <div class="modal-content tutorial-content">
-        <div class="lang-toggle">
-          <button id="btn-en" class="active">English</button>
-          <button id="btn-ml">മലയാളം</button>
-        </div>
-        <h2>HOW TO PLAY</h2>
-
-        <div class="tutorial-progress">
-          <span id="tutorial-step-count">STEP 1 OF 6</span>
-          <div class="tutorial-progress-track">
-            <div id="tutorial-progress-fill"></div>
-          </div>
-        </div>
-
-        <div class="tutorial-step">
-          <h3 id="tutorial-title">The Objective</h3>
-          <p id="tutorial-description">
-            Win battles and collect Combat Cards in your Resting pile. The
-            player with the most Resting Cards wins!
-          </p>
-        </div>
-
-        <div class="tutorial-buttons">
-          <button id="tutorial-back-button" disabled>BACK</button>
-
-          <button id="tutorial-skip-button">SKIP TUTORIAL</button>
-
-          <button id="tutorial-next-button">NEXT</button>
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- INITIAL POWER CARD SELECTION MODAL -->
-    <div id="power-selection-modal" class="modal hidden">
-      <div class="modal-content power-selection-content">
-        <h2>SELECT YOUR POWER CARD</h2>
-
-        <p id="power-selection-message">
-          Choose one card. You can reveal only one!
-        </p>
-
-        <div id="power-selection-cards" class="power-selection-cards">
-          <!-- Five cards will be created by JavaScript -->
-        </div>
-
-        <button id="power-selection-close-button" disabled>START GAME</button>
-      </div>
-    </div>
-
-    <!-- POWER ATTACK MODAL -->
-    <div id="power-modal" class="modal hidden">
-      <div class="modal-content">
-        <h2>POWER ATTACK!</h2>
-
-        <p id="power-message">Waiting for Power Cards...</p>
-
-        <div class="power-battle-slots">
-          <div class="power-player">
-            <h3>COMPUTER</h3>
-            <div id="modal-computer-power" class="modal-power-slot"></div>
+    <!-- Creator Section -->
+    <section
+      class="section side-padding py-5 text-white d-flex align-items-center"
+      style="background-color: var(--secondary-color)">
+      <div class="d-flex flex-column gap-3">
+        <div class="row g-4 w-100">
+          <div class="col-lg-6 col-md-12 d-flex justify-content-center">
+            <img
+              src="./public/vishnu-creator-designer-ranamgo.jpg"
+              style="width: 300px; border-radius: 7px; object-fit: cover"
+              alt="RanamGo - 2 player game - creator and designer - vishnu" />
           </div>
+          <div class="col-lg-6 col-md-12 text-center text-lg-start">
+            <div class="main-heading">behind ranamgo</div>
 
-          <div class="power-player">
-            <h3>YOU</h3>
-            <div id="modal-player-power" class="modal-power-slot"></div>
-          </div>
-        </div>
+            <div class="mb-3">
+              <div>
+                <span class="fw-bold">Vishnu GS</span>,
+                <span>Creator & Game Designer of RanamGo</span>
+              </div>
+              <div>Kerala, India</div>
+            </div>
 
-        <button id="power-play-button">PLAY</button>
-      </div>
-    </div>
+            <div>
+              I am an independent creator with an interest in exploring ideas
+              across multiple fields. RanamGo is one of the ideas I conceived
+              and developed, drawing inspiration from the Panchabhootha concept
+              - the five elements of nature, which I interpreted as special
+              Power elements within the game.
+            </div>
 
-    <!-- GO / STOP PENALTY MODAL -->
-    <div id="penalty-modal" class="modal hidden">
-      <div class="modal-content penalty-content">
-        <h2>PENALTY!</h2>
+            <div>
+              What began as an idea evolved into a two-player card game built
+              around luck, tactical decisions, and Power Attacks.
+            </div>
 
-        <p>You touched the shared Power deck without declaring GO.</p>
-
-        <p>
-          The computer wins this battle. Both Combat Cards are moved to the
-          computer's Resting pile.
-        </p>
-
-        <button id="penalty-close-button">CONTINUE</button>
-      </div>
-    </div>
-
-    <!-- GAME OVER MODAL -->
-    <div id="game-over-modal" class="modal hidden">
-      <div class="modal-content game-over-content">
-        <h2>GAME OVER!</h2>
-
-        <h1 id="final-winner">YOU WIN!</h1>
-
-        <div class="final-score">
-          <!-- PLAYER RESULTS -->
-          <div class="final-player">
-            <h3 id="player-result-title">YOU</h3>
-
-            <p>Resting Cards</p>
-            <div id="final-player-resting">0</div>
-
-            <p>Dead Cards</p>
-            <div id="final-player-dead">0</div>
-          </div>
-
-          <!-- COMPUTER RESULTS -->
-          <div class="final-player">
-            <h3 id="computer-result-title">COMPUTER</h3>
-
-            <p>Resting Cards</p>
-            <div id="final-computer-resting">0</div>
-
-            <p>Dead Cards</p>
-            <div id="final-computer-dead">0</div>
+            <div class="fw-bold mt-3">
+              Independently conceived and developed in India.
+            </div>
           </div>
         </div>
+      </div>
+    </section>
 
-        <!-- REMAINING POWER CARDS -->
-        <div class="remaining-power">
-          <h3>REMAINING POWER CARDS</h3>
-          <div id="final-power-count">0</div>
+    <!-- Contanct Section -->
+    <section
+      class="section side-padding py-5 d-flex flex-column gap-3 align-items-center justify-content-center"
+      style="background-color: var(--tertiary-color)" id="contact-section">
+      <div class="main-heading text-center">get in touch</div>
+      <p class="text-center text-lg-start">
+        Interested in trying RanamGo, requesting a print-and-play copy, or
+        sharing feedback? Get in touch!
+      </p>
+
+      <!-- Buttons side-by-side and responsive -->
+      <div
+        class="d-flex flex-row gap-3 align-items-center justify-content-center flex-wrap">
+        <a
+          href="https://www.instagram.com/ranamgo"
+          target="_blank"
+          class="text-decoration-none">
+          <button class="contact-btn">instagram</button>
+        </a>
+        <a
+          href="mailto:ranamgo.game@gmail.com"
+          target="_blank"
+          class="text-decoration-none">
+          <button class="contact-btn">email</button>
+        </a>
+      </div>
+
+      <div class="d-flex flex-column gap-3 mt-5 align-items-center">
+        <h3>Contact/Request Print & Play</h3>
+        <a
+          target="_blank"
+          href="https://docs.google.com/forms/d/e/1FAIpQLSepD5z3Kp5ancSZblmBYC_XOMTyLwGGI173fUWOsmF3MMaWdw/viewform?usp=publish-editor">
+          <button class="form-btn">contact or request print & play</button>
+        </a>
+        <small
+           class="text-lg-start text-center"><strong
+            >Your email is strictly for sending your print-and-play files and
+            rulebook. No marketing or spam.</strong
+          ></small
+        >
+        <a target="_blank" href="game.html" class="mt-5">
+          <button class="game-btn">play lightning mode online now!</button>
+        </a>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="side-padding py-5 bg-white">
+      <div
+        class="container d-flex flex-column align-items-center justify-content-center text-center gap-4">
+        <!-- Logo & Brand Name -->
+        <div>
+          <a
+            class="navbar-brand d-flex align-items-center justify-content-center gap-2 text-decoration-none"
+            href="/">
+            <img
+              src="/public/ranamgo_logo_v3.0.png"
+              alt="RanamGo"
+              class="logo"
+              width="50"
+              height="50" />
+            <h3 class="m-0">RanamGo</h3>
+          </a>
         </div>
 
-        <!-- PLAY AGAIN BUTTON -->
-        <button id="play-again-button">PLAY AGAIN</button>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSepD5z3Kp5ancSZblmBYC_XOMTyLwGGI173fUWOsmF3MMaWdw/viewform?usp=publish-editor" id="feedback-button">SEND FEEDBACK</a>
-      </div>
-    </div>
+        <!-- Instagram & Email Links -->
+        <div
+          class="d-flex flex-row gap-3 align-items-center justify-content-center flex-wrap">
+          <a
+            href="https://www.instagram.com/ranamgo"
+            target="_blank"
+            class="contact-btn text-decoration-none"
+            >instagram</a
+          >
+          <a
+            href="mailto:ranamgo.game@gmail.com"
+            target="_blank"
+            class="contact-btn text-decoration-none"
+            >email</a
+          >
+        </div>
 
-    <script src="cards.js"></script>
-    <script src="game.js"></script>
+        <!-- Copyright Text -->
+        <div class="text-black mt-2">
+          <small>&copy; 2026 RanamGo. All rights reserved.</small>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Updated JS bundle to match version 5.3.3 -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"></script>
   </body>
 </html>
