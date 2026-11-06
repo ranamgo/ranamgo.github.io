@@ -79,9 +79,3 @@ const allCards = [
     ...blueCards,
     ...powerCards
 ];
-
-console.log("Total cards: ", allCards.length);
-console.log("Red cards: ", redCards.length);
-console.log("Blue cards: ", blueCards.length);
-console.log("Power cards", powerCards.length);
-console.table(powerCards)

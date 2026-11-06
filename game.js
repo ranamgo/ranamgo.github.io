@@ -45,6 +45,7 @@ const gameState = {
 
     firstPowerPlayer: null,
     isSuddenDeath: false,
+    playerColour: null,
     phase: "computer-selecting"
 };
 
@@ -63,38 +64,50 @@ const tutorialSteps = [
     },
     {
         en: {
+            title: "Choose Your Colour",
+            description:
+                "Before the battle begins, choose whether you want to play with the Red or Blue Combat Cards. The computer will automatically take the other colour."
+        },
+        ml: {
+            title: "നിങ്ങളുടെ നിറം തിരഞ്ഞെടുക്കുക (Choose Your Colour)",
+            description:
+                "പോരാട്ടം ആരംഭിക്കുന്നതിന് മുമ്പ്, നിങ്ങൾ Red അല്ലെങ്കിൽ Blue Combat Cards തിരഞ്ഞെടുക്കുക. കമ്പ്യൂട്ടർ സ്വയം മറ്റേ നിറത്തിലുള്ള കാർഡുകൾ സ്വീകരിക്കും."
+        }
+    },
+    {
+        en: {
             title: "Choose Your Secret Power Card",
             description:
-                "You have five Power Cards. Inspect one card and remember its rank. The computer secretly selects one too. Your selected card stays in your row until you use it."
+                "You have five Power Cards(Golden-backed cards). Inspect one card and remember its rank. The computer secretly selects one too. Your selected card stays in your row until you use it."
         },
         ml: {
             title: "രഹസ്യ Power Card തിരഞ്ഞെടുക്കുക (Choose Secret Power Card)",
             description:
-                "നിങ്ങളുടെ പക്കൽ അഞ്ച് Power Cards ഉണ്ട്. ഒരു കാർഡ് പരിശോധിച്ച് അതിന്റെ റാങ്ക് ഓർത്തുവെക്കുക. കമ്പ്യൂട്ടറും ഒരെണ്ണം രഹസ്യമായി തിരഞ്ഞെടുക്കും. നിങ്ങൾ തിരഞ്ഞെടുത്ത കാർഡ് ഉപയോഗിക്കുന്നതുവരെ അത് നിങ്ങളുടെ നിരയിൽ തന്നെ നിൽക്കും."
+                "നിങ്ങളുടെ പക്കൽ അഞ്ച് Power Cards ഉണ്ട് (ഗോൾഡൻ നിറത്തിലുള്ള പുറംഭാഗമുള്ള കാർഡുകൾ). ഒരു കാർഡ് പരിശോധിച്ച് അതിന്റെ റാങ്ക് ഓർത്തുവെക്കുക. കമ്പ്യൂട്ടറും ഒരെണ്ണം രഹസ്യമായി തിരഞ്ഞെടുക്കും. നിങ്ങൾ തിരഞ്ഞെടുത്ത കാർഡ് ഉപയോഗിക്കുന്നതുവരെ അത് നിങ്ങളുടെ നിരയിൽ തന്നെ നിൽക്കും."
         }
     },
     {
         en: {
             title: "Start a Battle",
             description:
-                "Tap your Combat Card deck. Your card and the computer's card are revealed together. Normal Combat Cards are compared by value. The higher value wins."
+                "At the bottom of the game screen, you can see your chosen colored combat cards. Tap your Combat Card deck. Your card and the computer's card are revealed together. Normal Combat Cards are compared by value and the higher value wins."
         },
         ml: {
             title: "പോരാട്ടം ആരംഭിക്കുക (Start a Battle)",
             description:
-                "നിങ്ങളുടെ Combat Card deck-ൽ ടാപ്പ് ചെയ്യുക. നിങ്ങളുടെ കാർഡും കമ്പ്യൂട്ടറിന്റെ കാർഡും ഒന്നിച്ച് വെളിപ്പെടുത്തും. സാധാരണ Combat Cards-ന്റെ മൂല്യം താരതമ്യം ചെയ്യും. ഉയർന്ന മൂല്യമുള്ള കാർഡ് ജയിക്കും."
+                "ഗെയിം സ്ക്രീനിന്റെ താഴെയായി നിങ്ങൾക്ക് തിരഞ്ഞെടുത്ത കളർ കോംബാറ്റ് കാർഡുകൾ കാണാം. നിങ്ങളുടെ കോംബാറ്റ് കാർഡ് ഡെക്കിൽ ടാപ്പ് ചെയ്യുക. നിങ്ങളും കമ്പ്യൂട്ടറും തിരഞ്ഞെടുത്ത കാർഡുകൾ ഒരുമിച്ച് വെളിപ്പെടുത്തപ്പെടും. സാധാരണ കോംബാറ്റ് കാർഡുകൾ അവയുടെ മൂല്യങ്ങൾ താരതമ്യം ചെയ്താണ് വിലയിരുത്തുന്നത് അതായത് ഉയർന്ന മൂല്യമുള്ളത് വിജയിക്കുന്നു."
         }
     },
     {
         en: {
             title: "Power Attacks",
             description:
-                "Lightning Cards can trigger Power Attacks. When a Power Attack happens, reveal one of your remaining Power Cards. The lower rank number is stronger. The winner collects both Combat Cards. A tied Power Attack destroys all four cards."
+                "Lightning Cards can trigger Power Attacks. If one or both of the revealed cards are Lightning Cards (cards with the word 'LIGHTNING' written on them), a Power Attack can be initiated. When a Power Attack happens (you can see how to select power cards at the centre of the screen in the BATTLE FIELD), reveal one of your remaining Power Cards. The player who played the higher rank power card wins (#1 is the higher rank and #5 is the lowest rank). The winner collects both Combat Cards. A tied Power Attack destroys all four cards."
         },
         ml: {
             title: "Power Attacks",
             description:
-                "Lightning Cards-ന് Power Attacks ആരംഭിക്കാൻ കഴിയും. ഒരു Power Attack നടക്കുമ്പോൾ, നിങ്ങളുടെ ബാക്കിയുള്ള Power Cards-ൽ ഒരെണ്ണം വെളിപ്പെടുത്തുക. കുറഞ്ഞ റാങ്ക് നമ്പറുള്ള കാർഡാണ് കൂടുതൽ ശക്തം. വിജയിക്ക് രണ്ട് Combat Cards-ഉം ലഭിക്കും. Power Attack സമനിലയിലായാൽ നാല് കാർഡുകളും നശിക്കും."
+                "Lightning Cards-ന് Power Attacks ആരംഭിക്കാൻ സാധിക്കും. Reveal ചെയ്ത കാർഡുകളിൽ ഒന്നോ രണ്ടുമോ Lightning Cards ആണെങ്കിൽ ('LIGHTNING' എന്ന് എഴുതിയിരിക്കുന്ന കാർഡുകൾ), Power Attack ആരംഭിക്കാം. ഒരു Power Attack നടക്കുമ്പോൾ (BATTLE FIELD -ലെ സ്ക്രീനിന്റെ മധ്യഭാഗത്ത് പവർ കാർഡുകൾ എങ്ങനെ തിരഞ്ഞെടുക്കണം എന്ന് കാണാം), നിങ്ങളുടെ ബാക്കി പവർ കാർഡുകളിൽ ഒരെണ്ണം തുറന്ന് കാണിക്കുക. ഉയർന്ന റാങ്ക് പവർ കാർഡ് കളിച്ച കളിക്കാരൻ വിജയിക്കുന്നു (#1 ആണ് ഏറ്റവും ഉയർന്ന റാങ്ക്, #5 ഏറ്റവും കുറഞ്ഞ റാങ്ക്). വിജയി രണ്ട് Combat Cards-ഉം സ്വന്തമാക്കും. ടൈ ആയാൽ നാല് കാർഡുകളും നശിപ്പിക്കപ്പെടും."
         }
     },
     {
@@ -125,12 +138,12 @@ const tutorialSteps = [
         en: {
             title: "Special Cards and Winning",
             description:
-                "A Destructor destroys both Combat Cards. When all Combat Cards have been played, the player with more Resting Cards wins. If scores are tied, Sudden Death begins!"
+                "A Destructor Card destroys both Combat Cards. When all Combat Cards have been played, the player with more Resting Cards wins. If scores are tied, Sudden Death begins!"
         },
         ml: {
             title: "പ്രത്യേക കാർഡുകളും വിജയവും (Special Cards and Winning)",
             description:
-                "ഒരു Destructor രണ്ട് Combat Cards-നെയും നശിപ്പിക്കുന്നു. എല്ലാ Combat Cards-ഉം കളിച്ചു കഴിയുമ്പോൾ, കൂടുതൽ Resting Cards ഉള്ള കളിക്കാരൻ വിജയിക്കും. സ്കോറുകൾ സമനിലയിലായാൽ, Sudden Death ആരംഭിക്കും!"
+                "ഒരു Destructor Card രണ്ട് Combat Cards-നെയും നശിപ്പിക്കുന്നു. എല്ലാ Combat Cards-ഉം കളിച്ചു കഴിയുമ്പോൾ, കൂടുതൽ Resting Cards ഉള്ള കളിക്കാരൻ വിജയിക്കും. സ്കോറുകൾ സമനിലയിലായാൽ, Sudden Death ആരംഭിക്കും!"
         }
     }
 ];
@@ -144,6 +157,35 @@ gameState.playerPowerDeck.forEach((card, index) => {
 gameState.computerPowerDeck.forEach((card, index) => {
     card.position = index;
 });
+
+
+
+function showColourSelection() {
+    document.getElementById("colour-selection-modal")
+        .classList.remove("hidden");
+}
+
+function selectPlayerColour(colour) {
+    gameState.playerColour = colour;
+
+    document.querySelectorAll(".colour-option").forEach(button => {
+        button.classList.remove("selected");
+    });
+
+    const selectedButton = document.querySelector(
+        `.colour-option[data-colour="${colour}"]`
+    );
+
+    selectedButton.classList.add("selected");
+
+    const computerColour = colour === "red" ? "blue" : "red";
+
+    document.getElementById("colour-selection-message").textContent =
+        `You chose ${colour.toUpperCase()}! Computer will play ${computerColour.toUpperCase()}.`;
+
+    document.getElementById("colour-selection-continue").disabled = false;
+}
+
 
 let currentTutorialStep = 0;
 
@@ -185,7 +227,8 @@ function closeTutorialAndStart() {
     document.getElementById("tutorial-modal")
         .classList.add("hidden");
 
-    initializePowerCards();
+    // initializePowerCards();
+    showColourSelection();
 }
 
 function renderPowerRows() {
@@ -663,8 +706,25 @@ async function computerChoosePowerCard() {
     }, 1000);
 }
 
+// Update the player set card color
+function updateDeckColours() {
+    const playerDeckCard = document.querySelector(
+        "#player-cards .card-back"
+    );
 
+    const computerDeckCard = document.querySelector(
+        "#computer-cards .card-back"
+    );
 
+    const playerColour = gameState.playerColour;
+    const computerColour = playerColour === "red" ? "blue" : "red";
+
+    playerDeckCard.classList.remove("red-back", "blue-back");
+    playerDeckCard.classList.add(`${playerColour}-back`);
+
+    computerDeckCard.classList.remove("red-back", "blue-back");
+    computerDeckCard.classList.add(`${computerColour}-back`);
+}
 
 
 // 4. Display a revealed Combat Card
@@ -1054,6 +1114,7 @@ function playSecondPowerCard() {
 async function resolvePowerAttack() {
     const playerPower = gameState.playerPowerCard;
     const computerPower = gameState.computerPowerCard;
+    let suddenDeathWinner = null;
 
     if (!playerPower || !computerPower) return;
 
@@ -1079,6 +1140,10 @@ async function resolvePowerAttack() {
             animateCardToPile("computer-slot", "player-resting")
         );
 
+        if (gameState.isSuddenDeath) {
+            suddenDeathWinner = "player"
+        }
+
     } else if (computerPower.rank < playerPower.rank) {
 
         gameState.computerResting.push(gameState.computerCard);
@@ -1091,6 +1156,10 @@ async function resolvePowerAttack() {
             animateCardToPile("player-slot", "computer-resting"),
             animateCardToPile("computer-slot", "computer-resting")
         );
+
+        if (gameState.isSuddenDeath) {
+            suddenDeathWinner = "computer"
+        }
 
     } else {
 
@@ -1113,6 +1182,16 @@ async function resolvePowerAttack() {
 
     gameState.playerPowerCard = null;
     gameState.computerPowerCard = null;
+
+
+    if (gameState.isSuddenDeath && suddenDeathWinner !== null) {
+        gameState.phase = "game-over";
+        setTimeout(() => {
+            showGameOver(suddenDeathWinner);
+        }, 500);
+
+        return;
+    }
 
     finishBattle();
 }
@@ -1503,7 +1582,35 @@ document.getElementById("sudden-death-begin-button")
             .classList.add("hidden");
     });
 
-// initializePowerCards();
+
+document.querySelectorAll(".colour-option").forEach(button => {
+    button.addEventListener("click", () => {
+        selectPlayerColour(button.dataset.colour);
+    });
+});
+
+document.getElementById("colour-selection-continue")
+    .addEventListener("click", () => {
+        if (!gameState.playerColour) return;
+
+        // Assign Combat Card sets according to player's choice
+        if (gameState.playerColour === "red") {
+            gameState.playerDeck = shuffleCards(redCards);
+            gameState.computerDeck = shuffleCards(blueCards);
+        }
+        else {
+            gameState.playerDeck = shuffleCards(blueCards);
+            gameState.computerDeck = shuffleCards(redCards);
+        }
+
+        updateDeckColours();
+
+        document.getElementById("colour-selection-modal")
+            .classList.add("hidden");
+
+        initializePowerCards();
+    });
+
 showTutorial();
 
 // 8. Show the initial counts

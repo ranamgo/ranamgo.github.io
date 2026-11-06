@@ -156,6 +156,28 @@
       </div>
     </div>
 
+    <!-- SELECT PLAYER SET -->
+    <div id="colour-selection-modal" class="modal hidden">
+      <div class="modal-content colour-selection-content">
+        <h2>CHOOSE YOUR COLOUR</h2>
+        <p>Select the Combat Card colour you want to play with.</p>
+
+        <div class="colour-options">
+          <button class="colour-option red-option" data-colour="red">
+            <span>RED</span>
+          </button>
+
+          <button class="colour-option blue-option" data-colour="blue">
+            <span>BLUE</span>
+          </button>
+        </div>
+
+        <p id="colour-selection-message">Choose your colour to continue.</p>
+
+        <button id="colour-selection-continue" disabled>CONTINUE</button>
+      </div>
+    </div>
+
     <!-- INITIAL POWER CARD SELECTION MODAL -->
     <div id="power-selection-modal" class="modal hidden">
       <div class="modal-content power-selection-content">
@@ -293,7 +315,10 @@
 
             <li>If a Power Attack ends in a tie, the battle continues.</li>
 
-            <li>The first player to win a battle wins the game! (Higher-valued card wins the game)</li>
+            <li>
+              The first player to win a battle wins the game! (Higher-valued
+              card wins the game)
+            </li>
           </ul>
         </div>
 
