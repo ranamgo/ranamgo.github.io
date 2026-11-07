@@ -90,12 +90,12 @@ const tutorialSteps = [
         en: {
             title: "Start a Battle",
             description:
-                "At the bottom of the game screen, you can see your chosen colored combat cards. Tap your Combat Card deck. Your card and the computer's card are revealed together. Normal Combat Cards are compared by value and the higher value wins."
+                "At the bottom of the game screen, you can see your chosen colored combat cards. Tap your Combat Card deck. Your card and the computer's card are revealed together. Normal Combat Cards are compared by value and the higher value wins. The winning card moves to the winner's Resting Cards pile (on the right side of the screen), and the losing card moves to the loser's Dead Cards pile (on the left side of the screen)."
         },
         ml: {
             title: "പോരാട്ടം ആരംഭിക്കുക (Start a Battle)",
             description:
-                "ഗെയിം സ്ക്രീനിന്റെ താഴെയായി നിങ്ങൾക്ക് തിരഞ്ഞെടുത്ത കളർ കോംബാറ്റ് കാർഡുകൾ കാണാം. നിങ്ങളുടെ കോംബാറ്റ് കാർഡ് ഡെക്കിൽ ടാപ്പ് ചെയ്യുക. നിങ്ങളും കമ്പ്യൂട്ടറും തിരഞ്ഞെടുത്ത കാർഡുകൾ ഒരുമിച്ച് വെളിപ്പെടുത്തപ്പെടും. സാധാരണ കോംബാറ്റ് കാർഡുകൾ അവയുടെ മൂല്യങ്ങൾ താരതമ്യം ചെയ്താണ് വിലയിരുത്തുന്നത് അതായത് ഉയർന്ന മൂല്യമുള്ളത് വിജയിക്കുന്നു."
+                "ഗെയിം സ്ക്രീനിന്റെ താഴെയായി നിങ്ങൾക്ക് തിരഞ്ഞെടുത്ത കളർ കോംബാറ്റ് കാർഡുകൾ കാണാം. നിങ്ങളുടെ കോംബാറ്റ് കാർഡ് ഡെക്കിൽ ടാപ്പ് ചെയ്യുക. നിങ്ങളും കമ്പ്യൂട്ടറും തിരഞ്ഞെടുത്ത കാർഡുകൾ ഒരുമിച്ച് വെളിപ്പെടുത്തപ്പെടും. സാധാരണ കോംബാറ്റ് കാർഡുകൾ അവയുടെ മൂല്യങ്ങൾ താരതമ്യം ചെയ്താണ് വിലയിരുത്തുന്നത് അതായത് ഉയർന്ന മൂല്യമുള്ളത് വിജയിക്കുന്നു. വിജയിച്ച കാർഡ് വിജയിയുടെ 'Resting Cards' അടുക്കിലേക്ക് (സ്ക്രീനിന്റെ വലതുവശത്തുള്ള അടുക്ക്) നീങ്ങുന്നു, തോറ്റ കാർഡ് പരാജയപ്പെട്ട ആളുടെ 'Dead Cards' അടുക്കിലേക്ക് (സ്ക്രീനിന്റെ ഇടതുവശത്തുള്ള അടുക്ക്) നീങ്ങുന്നു."
         }
     },
     {
