@@ -1,3 +1,11 @@
+:root {
+    --primary-color: #ea0b0bff;
+    --secondary-color: #1b5998ff;
+    --tertiary-color: #d4aa00ff;
+    --neutral-color: #0D1B2A;
+}
+
+
 * {
     box-sizing: border-box;
 }
@@ -159,8 +167,28 @@ body {
 
 #game-status {
     margin-top: 25px;
-    color: #f5d76e;
     font-weight: bold;
+    border: 2px solid var(--tertiary-color);
+    text-align: center;
+    font-size: 12px;
+    padding: 5px 15px;
+    border-radius: 8px;
+    animation: gold-pulse 2s infinite;
+}
+
+@keyframes gold-pulse {
+  0% {
+    border-color: rgba(212, 170, 0, 1);
+    box-shadow: 0 0 8px rgba(212, 170, 0, 0.6);
+  }
+  50% {
+    border-color: rgba(212, 170, 0, 0.3);
+    box-shadow: 0 0 0px rgba(212, 170, 0, 0);
+  }
+  100% {
+    border-color: rgba(212, 170, 0, 1);
+    box-shadow: 0 0 8px rgba(212, 170, 0, 0.6);
+  }
 }
 
 .power-card.game-card, .power-card {
@@ -312,12 +340,6 @@ body {
 #go-button:disabled, #no-button:disabled {
     background: #777;
     cursor: not-allowed;
-}
-
-#game-status {
-    text-align: center;
-    font-size: 12px;
-    padding: 3px;
 }
 
 .card-piles {
