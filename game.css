@@ -850,6 +850,8 @@ body {
     width: min(520px, 94vw);
     text-align: center;
     padding: 25px;
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 .tutorial-progress {

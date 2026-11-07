@@ -102,24 +102,24 @@ const tutorialSteps = [
         en: {
             title: "Power Attacks",
             description:
-                "Lightning Cards can trigger Power Attacks. If one or both of the revealed cards are Lightning Cards (cards with the word 'LIGHTNING' written on them), a Power Attack can be initiated. When a Power Attack happens (you can see how to select power cards at the centre of the screen in the BATTLE FIELD), reveal one of your remaining Power Cards. The player who played the higher rank power card wins (#1 is the higher rank and #5 is the lowest rank). The winner collects both Combat Cards. A tied Power Attack destroys all four cards."
+                "Lightning Cards can trigger Power Attacks. If one or both of the revealed cards are Lightning Cards (cards with the word 'LIGHTNING' written on them), a Power Attack can be initiated. When a Power Attack happens (you can see how to select power cards at the centre of the screen in the BATTLE FIELD), reveal one of your remaining Power Cards. The player who played the higher rank power card wins (#1 is the higher rank and #5 is the lowest rank). The winner collects both Combat Cards into their Resting Cards pile. A tied Power Attack destroys all four cards, and the cards move to the players' respective Dead Cards piles."
         },
         ml: {
             title: "Power Attacks",
             description:
-                "Lightning Cards-ന് Power Attacks ആരംഭിക്കാൻ സാധിക്കും. Reveal ചെയ്ത കാർഡുകളിൽ ഒന്നോ രണ്ടുമോ Lightning Cards ആണെങ്കിൽ ('LIGHTNING' എന്ന് എഴുതിയിരിക്കുന്ന കാർഡുകൾ), Power Attack ആരംഭിക്കാം. ഒരു Power Attack നടക്കുമ്പോൾ (BATTLE FIELD -ലെ സ്ക്രീനിന്റെ മധ്യഭാഗത്ത് പവർ കാർഡുകൾ എങ്ങനെ തിരഞ്ഞെടുക്കണം എന്ന് കാണാം), നിങ്ങളുടെ ബാക്കി പവർ കാർഡുകളിൽ ഒരെണ്ണം തുറന്ന് കാണിക്കുക. ഉയർന്ന റാങ്ക് പവർ കാർഡ് കളിച്ച കളിക്കാരൻ വിജയിക്കുന്നു (#1 ആണ് ഏറ്റവും ഉയർന്ന റാങ്ക്, #5 ഏറ്റവും കുറഞ്ഞ റാങ്ക്). വിജയി രണ്ട് Combat Cards-ഉം സ്വന്തമാക്കും. ടൈ ആയാൽ നാല് കാർഡുകളും നശിപ്പിക്കപ്പെടും."
+                "Lightning Cards-ന് Power Attacks ആരംഭിക്കാൻ സാധിക്കും. Reveal ചെയ്ത കാർഡുകളിൽ ഒന്നോ രണ്ടുമോ Lightning Cards ആണെങ്കിൽ ('LIGHTNING' എന്ന് എഴുതിയിരിക്കുന്ന കാർഡുകൾ), Power Attack ആരംഭിക്കാം. ഒരു Power Attack നടക്കുമ്പോൾ (BATTLE FIELD -ലെ സ്ക്രീനിന്റെ മധ്യഭാഗത്ത് പവർ കാർഡുകൾ എങ്ങനെ തിരഞ്ഞെടുക്കണം എന്ന് കാണാം), നിങ്ങളുടെ ബാക്കി പവർ കാർഡുകളിൽ ഒരെണ്ണം തുറന്ന് കാണിക്കുക. ഉയർന്ന റാങ്ക് പവർ കാർഡ് കളിച്ച കളിക്കാരൻ വിജയിക്കുന്നു (#1 ആണ് ഏറ്റവും ഉയർന്ന റാങ്ക്, #5 ഏറ്റവും കുറഞ്ഞ റാങ്ക്). വിജയി രണ്ട് കോംബാറ്റ് കാർഡുകളും തന്റെ Resting Cards അടുക്കിലേക്ക് വെക്കുന്നു. ടൈ ആയ ഒരു പവർ അറ്റാക്ക് (Power Attack) നാല് കാർഡുകളും നശിപ്പിക്കുന്നു, കൂടാതെ ആ കാർഡുകൾ കളിക്കാരുടെ അതാത് Dead Cards അടുക്കുകളിലേക്ക് നീക്കുന്നു."
         }
     },
     {
         en: {
             title: "Remember to Call GO!",
             description:
-                "When your Lightning Card has a lower value than the opponent's Normal Card, you may launch an optional Power Attack. Press GO before touching your Power Cards! Touching a Power Card without calling GO results in a penalty: the computer collects both Combat Cards."
+                "When your Lightning Card has a lower value than the opponent's Normal Card, you may launch an optional Power Attack. Press GO before touching your Power Cards! Touching a Power Card without calling GO results in a penalty: the computer collects both Combat Cards (Resting Cards pile)."
         },
         ml: {
             title: "GO എന്ന് പറയാൻ ഓർക്കുക! (Remember to Call GO!)",
             description:
-                "നിങ്ങളുടെ Lightning Card-ന്റെ മൂല്യം എതിരാളിയുടെ Normal Card-നേക്കാൾ കുറവാണെങ്കിൽ, നിങ്ങൾക്ക് വേണമെങ്കിൽ ഒരു Power Attack ആരംഭിക്കാം. Power Cards തൊടുന്നതിന് മുൻപ് GO അമർത്തുക! GO പറയാതെ Power Card തൊട്ടാൽ പിഴ ലഭിക്കും: കമ്പ്യൂട്ടർ രണ്ട് Combat Cards-ഉം കൈക്കലാക്കും."
+                "നിങ്ങളുടെ Lightning Card-ന്റെ മൂല്യം എതിരാളിയുടെ Normal Card-നേക്കാൾ കുറവാണെങ്കിൽ, നിങ്ങൾക്ക് വേണമെങ്കിൽ ഒരു Power Attack ആരംഭിക്കാം. Power Cards തൊടുന്നതിന് മുൻപ് GO അമർത്തുക! GO പറയാതെ Power Card തൊട്ടാൽ പിഴ ലഭിക്കും: കമ്പ്യൂട്ടർ രണ്ട് Combat Cards-ഉം കൈക്കലാക്കും (Resting Cards pile)."
         }
     },
     {
